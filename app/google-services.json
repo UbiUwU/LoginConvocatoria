@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "241598027558",
+    "project_id": "loginconvocatoria",
+    "storage_bucket": "loginconvocatoria.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241598027558:android:f32c9415902dcc17fd53e7",
+        "android_client_info": {
+          "package_name": "com.example.loginconvocatoria"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7iylJp_n47YWX9XUg5WGK_Gm6VBgcaas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

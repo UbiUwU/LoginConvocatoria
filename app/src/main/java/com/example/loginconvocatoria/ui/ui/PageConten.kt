@@ -87,7 +87,12 @@ fun PageContent() {
             ) {
                 Text(text = "Otra Sección", style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Aquí puedes añadir más contenido o información relacionada con el proyecto.", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed magna elit, sagittis vel feugiat eu, vehicula et dui. " +
+                        "Nulla tempus, arcu et congue porttitor, felis ligula feugiat mi, a euismod neque erat non orci. " +
+                        "Aliquam neque odio, malesuada eu placerat non, iaculis cursus nisi. Praesent laoreet enim ac sagittis auctor. " +
+                        "Aenean nibh lacus, maximus id imperdiet sit amet, vehicula ut felis. Curabitur commodo non massa at congue. " +
+                        "Fusce turpis lacus, sollicitudin ut magna ac, condimentum maximus urna. " +
+                        "Sed eleifend consectetur nunc, nec feugiat quam feugiat et..", style = MaterialTheme.typography.bodyMedium)
             }
         }
     }

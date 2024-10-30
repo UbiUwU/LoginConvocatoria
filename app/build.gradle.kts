@@ -67,7 +67,9 @@ dependencies {
     implementation ("io.coil-kt:coil-compose:2.7.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     implementation ("androidx.navigation:navigation-compose:2.5.3")
-    implementation(libs.firebase.crashlytics) // o la última versión disponible
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.generativeai)
+    implementation(libs.firebase.vertexai) // o la última versión disponible
     val nav_version = "2.8.0"
 
     // Jetpack Compose integration

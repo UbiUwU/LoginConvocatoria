@@ -5,10 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.loginconvocatoria.screens.HomeScreen
-import com.example.loginconvocatoria.screens.PageContent
+import com.example.loginconvocatoria.ui.ui.PageContent
 import com.example.loginconvocatoria.screens.Ruta1
 import com.example.loginconvocatoria.screens.Ruta2
 import com.example.loginconvocatoria.screens.Ruta3
+import com.example.loginconvocatoria.ui.ui.CreationAgend
 
 @Composable
 fun BancoNav(
@@ -32,6 +33,9 @@ fun BancoNav(
         }
         composable("page_content") {
             PageContent()
+        }
+        composable("Creation_Agend") {
+            CreationAgend(navController = navController)
         }
 
     }

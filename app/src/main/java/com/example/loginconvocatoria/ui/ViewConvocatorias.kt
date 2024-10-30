@@ -14,7 +14,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.loginconvocatoria.screens.PageContent
+import com.example.loginconvocatoria.ui.ui.PageContent
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 
 // Definimos las rutas de las pantallas
 sealed class Screen(val route: String) {
@@ -23,6 +25,7 @@ sealed class Screen(val route: String) {
         fun createRoute(itemId: Int) = "detail/$itemId"
     }
     object PageContent : Screen("page_content") // Nueva pantalla
+    object CreationAgend : Screen("Creation_Agend") // Nueva pantalla
 }
 
 // Composable principal con la configuración de navegación
@@ -45,30 +48,49 @@ fun MainScreen(navController: NavHostController) {
     }
 }
 
-// Pantalla del menú con una lista de tarjetas
 @Composable
 fun ViewConvocatorias(navController: NavController) {
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        items(10) { index ->  // Aquí se crean 10 tarjetas como ejemplo
-            MenuCard(
-                title = "Nombre generico para la agenda $index",
-                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed magna elit, sagittis vel feugiat eu, vehicula et dui. " +
-                        "Nulla tempus, arcu et congue porttitor, felis ligula feugiat mi, a euismod neque erat non orci. " +
-                        "Aliquam neque odio, malesuada eu placerat non, iaculis cursus nisi. Praesent laoreet enim ac sagittis auctor. " +
-                        "Aenean nibh lacus, maximus id imperdiet sit amet, vehicula ut felis. Curabitur commodo non massa at congue. " +
-                        "Fusce turpis lacus, sollicitudin ut magna ac, " +
-                        "condimentum maximus urna. Sed eleifend consectetur nunc, nec feugiat quam feugiat et. $index",
-                onClick = {
-                    navController.navigate("page_content")// Navegar a PageContent
-                }
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f) // Para ocupar todo el espacio disponible
+        ) {
+            items(10) { index ->  // Aquí se crean 10 tarjetas como ejemplo
+                MenuCard(
+                    title = "Nombre generico para la agenda $index",
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed magna elit, sagittis vel feugiat eu, vehicula et dui. " +
+                            "Nulla tempus, arcu et congue porttitor, felis ligula feugiat mi, a euismod neque erat non orci. " +
+                            "Aliquam neque odio, malesuada eu placerat non, iaculis cursus nisi. Praesent laoreet enim ac sagittis auctor. " +
+                            "Aenean nibh lacus, maximus id imperdiet sit amet, vehicula ut felis. Curabitur commodo non massa at congue. " +
+                            "Fusce turpis lacus, sollicitudin ut magna ac, " +
+                            "condimentum maximus urna. Sed eleifend consectetur nunc, nec feugiat quam feugiat et. $index",
+                    onClick = {
+                        navController.navigate("page_content") // Navegar a PageContent
+                    }
+                )
+            }
+        }
+
+        // Botón circular flotante con icono de "+"
+        FloatingActionButton(
+            onClick = { navController.navigate("Creation_Agend") }, // Navegar a PageContent
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 16.dp),
+            containerColor = MaterialTheme.colorScheme.primary
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Agregar"
             )
         }
     }
 }
+
 // Composable para una tarjeta de menú
 @Composable
 fun MenuCard(title: String, description: String, onClick: () -> Unit) {

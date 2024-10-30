@@ -54,6 +54,8 @@ fun getTitleForRoute(route: String?): String {
         MenuLateral.Ruta1.route -> MenuLateral.Ruta1.title
         MenuLateral.Ruta2.route -> MenuLateral.Ruta2.title
         MenuLateral.PageContent.route -> MenuLateral.PageContent.title
+        MenuLateral.CreationAgend.route -> MenuLateral.CreationAgend.title
+        // Add more cases for other routes if needed
         else -> "Ruta desconocida" // Or a more appropriate default
     }
 }

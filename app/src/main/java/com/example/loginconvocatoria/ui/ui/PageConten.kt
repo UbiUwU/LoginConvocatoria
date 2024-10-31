@@ -154,6 +154,7 @@ fun CommentsScreen() {
 
     CommentsSection(comments = comments)
 }
+//---------------------------------------------------//
 @Composable
 fun CommentItem(commentText: String, modifier: Modifier = Modifier) {
     Card(

@@ -22,7 +22,7 @@ fun CardComponent(title: String, content: @Composable () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(

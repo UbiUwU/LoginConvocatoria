@@ -28,7 +28,7 @@ fun CardComponent(title: String, content: @Composable () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(6.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -36,7 +36,8 @@ fun CardComponent(title: String, content: @Composable () -> Unit) {
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             content()
@@ -164,57 +165,241 @@ fun CreationAgend(navController: NavController) {
     var AccionRegu by remember { mutableStateOf("Selecciona una opción") }
     var MateriaSoVaRe by remember { mutableStateOf("") }
 
+    var DescripcionProRe by remember { mutableStateOf("") }
+    var ProblematicaResol by remember { mutableStateOf("") }
+    var Justificacion by remember { mutableStateOf("") }
+    var Beneficios by remember { mutableStateOf("") }
+    var FundamentosJurid by remember { mutableStateOf("") }
+    var FechaTentaAIR by remember { mutableStateOf("") }
+    var FechaTentaPOE by remember { mutableStateOf("") }
+    var SujetoObli by remember { mutableStateOf("") }
+    var ResponsableElab by remember { mutableStateOf("") }
+    var ResponsableElabInfo by remember { mutableStateOf("") }
+    var ResponsableInsti by remember { mutableStateOf("") }
+    var ResponsableQuienE by remember { mutableStateOf("") }
+    var FechaSioNo by remember { mutableStateOf("") }
+
+    var currentSection by remember { mutableStateOf(1) }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        CardComponent(title = "Detalles del Proyecto") {
-            OutlinedTextField(
-                value = NombrePrePro,
-                onValueChange = { NombrePrePro = it },
-                label = { Text("Nombre del Proyecto") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Campo de fecha de presentación
-                DateField(
-                    label = "Fecha de Presentación",
-                    selectedDate = FechaPre,
-                    onDateSelected = { FechaPre = it },
-                    modifier = Modifier.weight(1f)  // Se ajusta para ocupar el mismo espacio
-                )
+        // Mostrar el contenido basado en la sección actual
+        when (currentSection) {
+            1 -> {
+                CardComponent(title = "Detalles del Proyecto") {
+                    OutlinedTextField(
+                        value = NombrePrePro,
+                        onValueChange = { NombrePrePro = it },
+                        label = { Text("Nombre del Proyecto")},
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Campo de fecha de presentación
+                        DateField(
+                            label = "Fecha de Presentación",
+                            selectedDate = FechaPre,
+                            onDateSelected = { FechaPre = it },
+                            modifier = Modifier.weight(1f)  // Se ajusta para ocupar el mismo espacio
+                        )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
 
-                // Dropdown de acción regulatoria con el Button
-                DropdownMenuComponent(
-                    label = "Acción Regulatoria",
-                    items = listOf("Opción 1", "Opción 2", "Opción 3"),
-                    selectedOption = AccionRegu,
-                    onOptionSelected = { AccionRegu = it },
-                    modifier = Modifier.weight(1f)
-                        .padding(top = 9.dp)
-                )
+                        // Dropdown de acción regulatoria con el Button
+                        DropdownMenuComponent(
+                            label = "Acción Regulatoria",
+                            items = listOf("Opción 1", "Opción 2", "Opción 3"),
+                            selectedOption = AccionRegu,
+                            onOptionSelected = { AccionRegu = it },
+                            modifier = Modifier.weight(1f)
+                                .padding(top = 9.dp)
+                        )
+                    }
+
+                    OutlinedTextField(
+                        value = MateriaSoVaRe,
+                        onValueChange = { MateriaSoVaRe = it },
+                        label = { Text("Materia SoVaRe") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
+                    )
+                }
             }
 
-            OutlinedTextField(
-                value = MateriaSoVaRe,
-                onValueChange = { MateriaSoVaRe = it },
-                label = { Text("Materia SoVaRe") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp)
-            )
+            2 -> {
+                CardComponent(title = "Datos de explicacion") {
+                    OutlinedTextField(
+                        value = DescripcionProRe,
+                        onValueChange = { DescripcionProRe = it },
+                        label = { Text("Descripción de la agenda") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+
+                    OutlinedTextField(
+                        value = ProblematicaResol,
+                        onValueChange = { ProblematicaResol = it },
+                        label = { Text("Problema que se pretende resolver") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    OutlinedTextField(
+                        value = Justificacion,
+                        onValueChange = { Justificacion = it },
+                        label = { Text("Justificación para emitir") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    OutlinedTextField(
+                        value = Beneficios,
+                        onValueChange = { Beneficios = it },
+                        label = { Text("Beneficios que generará") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    OutlinedTextField(
+                        value = FundamentosJurid,
+                        onValueChange = { FundamentosJurid = it },
+                        label = { Text("Fundamentos jurídicos") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                }
+            }
+
+            3 -> {
+                // Nueva Card para información adicional
+                CardComponent(title = "Fechas") {
+                    // Nombre del Proyecto - Parte superior centrado
+                    OutlinedTextField(
+                        value = FechaSioNo,
+                        onValueChange = { FechaSioNo = it },
+                        label = { Text("Fechas de si o no ....................") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        DateField(
+                            label = "Fecha de Presentación para la AIR",
+                            selectedDate = FechaTentaAIR,
+                            onDateSelected = { FechaTentaAIR = it },
+                            modifier = Modifier.weight(1f)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        DateField(
+                            label = "Fecha de Presentación para el periodico",
+                            selectedDate = FechaTentaPOE,
+                            onDateSelected = { FechaTentaPOE = it },
+                            modifier = Modifier.weight(1f)
+                        )
+
+                    }
+                }
+            }
+
+            4 -> {
+                // Nueva Card para información adicional
+                CardComponent(title = "Información Adicional") {
+                    OutlinedTextField(
+                        value = SujetoObli,
+                        onValueChange = { SujetoObli = it },
+                        label = { Text("Sujeto obligado") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    OutlinedTextField(
+                        value = ResponsableElab,
+                        onValueChange = { ResponsableElab = it },
+                        label = { Text("Responsable cargo de la persona responsable oficial de mejora regulatoria.") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    OutlinedTextField(
+                        value = ResponsableElabInfo,
+                        onValueChange = { ResponsableElabInfo = it },
+                        label = { Text("Responsable cargo de la persona responsable oficial de mejora regulatoria.") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    OutlinedTextField(
+                        value = ResponsableInsti,
+                        onValueChange = { ResponsableInsti = it },
+                        label = { Text("Responsable cargo de la persona responsable oficial de mejora regulatoria.") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    OutlinedTextField(
+                        value = ResponsableQuienE,
+                        onValueChange = { ResponsableQuienE = it },
+                        label = { Text("Responsable cargo de la persona responsable cargo de quien elaboró.") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                }
+            }
+        }
+
+        // Botones de navegación
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Botón "Anterior" (desactivado si está en la primera sección)
+            Button(
+                onClick = { currentSection -= 1 },
+                enabled = currentSection > 1
+            ) {
+                Text("Anterior")
+            }
+
+            // Botón "Enviar" (solo visible en la última sección)
+            if (currentSection == 4) {
+                Button(
+                    onClick = {
+                        // Acción de envío
+                    },
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    Text("Enviar")
+                }
+            }
+
+            // Botón "Siguiente" (desactivado si está en la última sección)
+            Button(
+                onClick = { currentSection += 1 },
+                enabled = currentSection < 4
+            ) {
+                Text("Siguiente")
+            }
         }
     }
 }

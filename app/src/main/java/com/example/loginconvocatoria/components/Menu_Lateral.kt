@@ -17,6 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.background
+import androidx.compose.ui.res.colorResource
+import com.example.loginconvocatoria.R
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +43,7 @@ fun Menu_Lateral(
                     .fillMaxHeight(0.9f) // Ajusta la altura del menú lateral
                     .fillMaxWidth(0.6f) // Ajusta el ancho del menú lateral)
                     .clip(RoundedCornerShape(1.dp)) // Esquinas redondeadas
+
             ) {
                 Column(
                     modifier = Modifier
@@ -56,18 +61,32 @@ fun Menu_Lateral(
                     menuItems.forEach { item ->
                         NavigationDrawerItem(
                             icon = {
-                                Icon(item.icon, contentDescription = null)
+                                Icon(item.icon, contentDescription = null, tint = colorResource(id = R.color.rojoA))
                             },
-                            label = { Text(text = item.title) },
+                            label = {
+                                Text(
+                                    text = item.title,
+                                    color = colorResource(id = R.color.black)
+                                )
+                            },
                             selected = currentRoute(navController) == item.route,
                             onClick = {
                                 navigateToRoute(navController, item.route, drawerState, scope)
                             },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedTextColor = colorResource(id = R.color.white),
+                                unselectedTextColor = colorResource(id = R.color.white),
+                                selectedIconColor = colorResource(id = R.color.rojoA),
+                                unselectedIconColor = colorResource(id = R.color.rojoA),
+                                selectedContainerColor = colorResource(id = R.color.rojoA).copy(alpha = 0.1f), // Opcional para darle un fondo
+                                unselectedContainerColor = Color.Transparent
+                            ),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 2.dp) // Espaciado vertical
+                                .padding(vertical = 2.dp)
                         )
                     }
+
                 }
             }
         }

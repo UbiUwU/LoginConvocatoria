@@ -33,6 +33,7 @@ fun Menu_Lateral(
     val menuItems = listOf(
         MenuLateral.Home,
         MenuLateral.Ruta1
+        //Aqui poner otra opcion del agente y del cuidadano pero mas adelante xd
     )
 
     ModalNavigationDrawer(

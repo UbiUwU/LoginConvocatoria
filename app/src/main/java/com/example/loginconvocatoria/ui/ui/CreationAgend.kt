@@ -1,6 +1,7 @@
 package com.example.loginconvocatoria.ui.ui
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -385,7 +386,13 @@ fun CreationAgend(navController: NavController) {
             if (currentSection == 4) {
                 Button(
                     onClick = {
-                        // Acción de envío
+                        val encodedUrl = "${Uri.encode(NombrePrePro)}/${Uri.encode(FechaPre)}/${Uri.encode(AccionRegu)}/${Uri.encode(MateriaSoVaRe)}/" +
+                                "${Uri.encode(DescripcionProRe)}/${Uri.encode(ProblematicaResol)}/${Uri.encode(Justificacion)}/${Uri.encode(Beneficios)}/" +
+                                "${Uri.encode(FundamentosJurid)}/${Uri.encode(FechaTentaAIR)}/${Uri.encode(FechaTentaPOE)}/${Uri.encode(SujetoObli)}/" +
+                                "${Uri.encode(ResponsableElab)}/${Uri.encode(ResponsableElabInfo)}/${Uri.encode(ResponsableInsti)}/${Uri.encode(ResponsableQuienE)}/" +
+                                "${Uri.encode(FechaSioNo)}"
+                        // Navegar con la URL codificada
+                        navController.navigate("Agenda_Visua/$encodedUrl")
                     },
                     modifier = Modifier.padding(horizontal = 16.dp)
                 ) {

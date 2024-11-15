@@ -57,7 +57,7 @@ fun ViewConvocatorias(navController: NavController) {
     ) {
         LazyColumn(
             modifier = Modifier
-                .weight(1f) // Para ocupar todo el espacio disponible
+                .weight(1f) // Para ocupartodo el espacio disponible
         ) {
             items(10) { index ->  // Aquí se crean 10 tarjetas como ejemplo
                 MenuCard(

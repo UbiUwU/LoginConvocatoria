@@ -16,5 +16,6 @@ sealed class MenuLateral(
     object PageContent : MenuLateral(Icons.Outlined.Add, "Informacion de la agenda", NavScreen.PageContent.route)
     object CreationAgend : MenuLateral(Icons.Outlined.Add, "Creacion de agenda", NavScreen.CreationAgend.route)
     object AgendaVisua : MenuLateral(Icons.Outlined.Add, "Visualizacion de agenda", NavScreen.AgendaVisua.route)
+    object AgendasFinal : MenuLateral(Icons.Outlined.List, "Agendas creadas", NavScreen.AgendasFinal.route)
     // Agrega otras rutas según sea necesario
 }

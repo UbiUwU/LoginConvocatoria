@@ -7,5 +7,6 @@ enum class NavScreen(val route: String) {
     Ruta3("ruta3"),
     PageContent("page_content"),
     CreationAgend("Creation_Agend"),
-    AgendaVisua("Agenda_Visua")
+    AgendaVisua("Agenda_Visua"),
+    AgendasFinal("Agendas_Final")
 }

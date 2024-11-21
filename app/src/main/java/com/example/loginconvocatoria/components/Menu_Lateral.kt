@@ -32,7 +32,8 @@ fun Menu_Lateral(
     val scope = rememberCoroutineScope()
     val menuItems = listOf(
         MenuLateral.Home,
-        MenuLateral.Ruta1
+        MenuLateral.Ruta1,
+        MenuLateral.AgendasFinal
         //Aqui poner otra opcion del agente y del cuidadano pero mas adelante xd
     )
 

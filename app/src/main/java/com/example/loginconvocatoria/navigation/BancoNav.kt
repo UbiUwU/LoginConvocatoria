@@ -10,6 +10,7 @@ import com.example.loginconvocatoria.screens.Ruta1
 import com.example.loginconvocatoria.screens.Ruta2
 import com.example.loginconvocatoria.screens.Ruta3
 import com.example.loginconvocatoria.ui.ui.AgendaVisua
+import com.example.loginconvocatoria.ui.ui.AgendasFinal
 import com.example.loginconvocatoria.ui.ui.CreationAgend
 
 @Composable
@@ -37,6 +38,9 @@ fun BancoNav(
         }
         composable("Creation_Agend") {
             CreationAgend(navController = navController)
+        }
+        composable("Agendas_Final") {
+            AgendasFinal(navController = navController)
         }
         agendaVisuaRoute(navController)
 

@@ -33,7 +33,8 @@ fun Menu_Lateral(
     val menuItems = listOf(
         MenuLateral.Home,
         MenuLateral.Ruta1,
-        MenuLateral.AgendasFinal
+        MenuLateral.AgendasFinal,
+        MenuLateral.Notifications
         //Aqui poner otra opcion del agente y del cuidadano pero mas adelante xd
     )
 

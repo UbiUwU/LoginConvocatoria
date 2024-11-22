@@ -12,6 +12,7 @@ import com.example.loginconvocatoria.screens.Ruta3
 import com.example.loginconvocatoria.ui.ui.AgendaVisua
 import com.example.loginconvocatoria.ui.ui.AgendasFinal
 import com.example.loginconvocatoria.ui.ui.CreationAgend
+import com.example.loginconvocatoria.ui.ui.Notifications
 
 @Composable
 fun BancoNav(
@@ -41,6 +42,9 @@ fun BancoNav(
         }
         composable("Agendas_Final") {
             AgendasFinal(navController = navController)
+        }
+        composable("Notifications") {
+            Notifications()
         }
         agendaVisuaRoute(navController)
 

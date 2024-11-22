@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Send
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.Composable
 
@@ -96,7 +97,9 @@ fun PageContent() {
 
 // Contenido del cuadro de comentarios
 @Composable
-fun CommentsSection(comments: List<String>) {
+fun CommentsSection(comments: List<Pair<String, String>>, onAddComment: (String) -> Unit) {
+    var newComment by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,7 +111,27 @@ fun CommentsSection(comments: List<String>) {
             color = MaterialTheme.colorScheme.primary
         )
 
-        // Aquí puedes agregar filtros y ordenar comentarios
+        // Campo para escribir un comentario
+        OutlinedTextField(
+            value = newComment,
+            onValueChange = { newComment = it },
+            label = { Text("Escribe un comentario") },
+            modifier = Modifier.fillMaxWidth(),
+            trailingIcon = {
+                IconButton(onClick = {
+                    if (newComment.isNotBlank()) {
+                        onAddComment(newComment) // Agregar comentario
+                        newComment = "" // Limpiar el campo
+                    }
+                }) {
+                    Icon(Icons.Outlined.Send, contentDescription = "Enviar comentario")
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Opciones de filtrado
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -123,40 +146,53 @@ fun CommentsSection(comments: List<String>) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Lista de comentarios utilizando LazyColumn para eficiencia
+        // Lista de comentarios
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(comments) { comment ->
-                CommentItem(commentText = comment)
-
+            items(comments) { (name, comment) ->
+                CommentItem(commentText = comment, userName = name)
             }
         }
     }
 }
+
+
 @Composable
 fun CommentsScreen() {
-    // Ejemplo de lista de comentarios
-    val comments = listOf(
-        "Este es un comentario de prueba 1",
-        "Aquí va otro comentario de ejemplo",
-        "Este es un tercer comentario para mostrar",
-        "Este es un comentario de prueba 1",
-        "Aquí va otro comentario de ejemplo",
-        "Este es un tercer comentario para mostrar",
-        "Este es un comentario de prueba 1",
-        "Aquí va otro comentario de ejemplo",
-        "Este es un tercer comentario para mostrar",
-        "Este es un comentario de prueba 1",
-        "Aquí va otro comentario de ejemplo",
-        "Este es un tercer comentario para mostrar"
-    )
+    // Lista mutable de comentarios (inicializada con comentarios genéricos)
+    val comments = remember {
+        mutableStateListOf(
+            Pair("Usuario Anónimo (21/11/2024 10:00:00)", "Me parece muy interesante esta propuesta."),
+            Pair("Usuario Anónimo (21/11/2024 10:15:00)", "¿Podrían dar más detalles sobre los beneficios?"),
+            Pair("Usuario Anónimo (21/11/2024 10:30:00)", "Estoy de acuerdo con los puntos presentados."),
+            Pair("Usuario Anónimo (21/11/2024 11:00:00)", "¿Habrá reuniones adicionales para discutir este tema?"),
+            Pair("Usuario Anónimo (21/11/2024 11:15:00)", "No estoy seguro de entender la justificación."),
+            Pair("Usuario Anónimo (21/11/2024 11:45:00)", "Gracias por la información."),
+            Pair("Usuario Anónimo (21/11/2024 12:00:00)", "Sugiero agregar un ejemplo práctico en la propuesta."),
+            Pair("Usuario Anónimo (21/11/2024 12:30:00)", "¡Excelente trabajo del equipo responsable!"),
+            Pair("Usuario Anónimo (21/11/2024 12:45:00)", "¿Cuándo estará disponible la versión final?"),
+            Pair("Usuario Anónimo (21/11/2024 13:00:00)", "Este tema es muy importante. Espero más información.")
+        )
+    }
 
-    CommentsSection(comments = comments)
+    // Llamada al componente de sección de comentarios con funcionalidad para agregar
+    CommentsSection(
+        comments = comments,
+        onAddComment = { comment ->
+            // Obtener la fecha y hora actuales
+            val timestamp = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss", java.util.Locale.getDefault())
+                .format(java.util.Date())
+            // Agregar el nuevo comentario a la lista
+            comments.add(Pair("Usuario Anónimo ($timestamp)", comment))
+        }
+    )
 }
+
+
 //---------------------------------------------------//
 @Composable
-fun CommentItem(commentText: String, modifier: Modifier = Modifier) {
+fun CommentItem(commentText: String, userName: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -170,7 +206,7 @@ fun CommentItem(commentText: String, modifier: Modifier = Modifier) {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Espacio para la imagen (actualmente es un ícono de placeholder)
+            // Foto de usuario representada por el ícono AccountCircle
             Icon(
                 imageVector = Icons.Outlined.AccountCircle,
                 contentDescription = "Foto de usuario",
@@ -181,14 +217,23 @@ fun CommentItem(commentText: String, modifier: Modifier = Modifier) {
             )
 
             // Texto del comentario
-            Text(
-                text = commentText,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
-            )
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = userName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = commentText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
+            }
         }
     }
 }
+
 
 @Composable
 fun ProjectCard(title: String, subject: String, description: String) {

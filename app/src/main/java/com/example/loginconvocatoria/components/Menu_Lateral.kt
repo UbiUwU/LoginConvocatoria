@@ -1,7 +1,8 @@
+
 package com.example.loginconvocatoria.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -15,10 +16,13 @@ import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.background
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import com.example.loginconvocatoria.R
 
 
@@ -35,7 +39,6 @@ fun Menu_Lateral(
         MenuLateral.Ruta1,
         MenuLateral.AgendasFinal,
         MenuLateral.Notifications
-        //Aqui poner otra opcion del agente y del cuidadano pero mas adelante xd
     )
 
     ModalNavigationDrawer(
@@ -43,21 +46,29 @@ fun Menu_Lateral(
         drawerContent = {
             ModalDrawerSheet(
                 modifier = Modifier
-                    .fillMaxHeight(0.9f) // Ajusta la altura del menú lateral
-                    .fillMaxWidth(0.6f) // Ajusta el ancho del menú lateral)
-                    .clip(RoundedCornerShape(1.dp)) // Esquinas redondeadas
-
+                    .fillMaxHeight(1.0f)
+                    .fillMaxWidth(0.70f) // Ancho del menú lateral
+                    .background(Color.White) // Fondo blanco para el menú
+                    .padding(0.dp) // Sin padding adicional
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp)
+                        .padding(0.dp) // Asegura que la columna ocupe todo el espacio sin padding adicional
                 ) {
-                    // Título del menú lateral
+                    // Título del menú
                     Text(
                         text = "Menú",
-                        style = MaterialTheme.typography.headlineMedium,
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 24.sp,  // Aumenta el tamaño
+                            fontWeight = FontWeight.Bold,  // Negrita para destacar
+                            color = colorResource(id = R.color.white)  // Color blanco
+                        ),
+                        modifier = Modifier
+                            .background(colorResource(id = R.color.rojoA))  // Fondo de color
+                            .fillMaxWidth()  // Asegura que ocupe todo el ancho
+                            .padding(16.dp)  // Espaciado alrededor del texto
+                            .padding(start = 16.dp, end = 16.dp)  // Espaciado interno
                     )
 
                     // Opciones de navegación
@@ -69,7 +80,8 @@ fun Menu_Lateral(
                             label = {
                                 Text(
                                     text = item.title,
-                                    color = colorResource(id = R.color.black)
+                                    color = colorResource(id = R.color.black),
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
                             },
                             selected = currentRoute(navController) == item.route,
@@ -78,18 +90,34 @@ fun Menu_Lateral(
                             },
                             colors = NavigationDrawerItemDefaults.colors(
                                 selectedTextColor = colorResource(id = R.color.white),
-                                unselectedTextColor = colorResource(id = R.color.white),
+                                unselectedTextColor = colorResource(id = R.color.black),
                                 selectedIconColor = colorResource(id = R.color.rojoA),
                                 unselectedIconColor = colorResource(id = R.color.rojoA),
-                                selectedContainerColor = colorResource(id = R.color.rojoA).copy(alpha = 0.1f), // Opcional para darle un fondo
+                                selectedContainerColor = colorResource(id = R.color.rojoA).copy(alpha = 0.1f),
                                 unselectedContainerColor = Color.Transparent
                             ),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 2.dp)
+                                .padding(vertical = 10.dp)
                         )
                     }
 
+                    Spacer(modifier = Modifier.weight(1f)) // Esto empuja los elementos al tope
+
+                    // Agregar los logos y la versión al final
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        // Logo del Gob :)
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(painter = painterResource(id = R.drawable.gobierno), contentDescription = "Gobierno del Estado de México")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(text = "Versión 1.0.0", style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
                 }
             }
         }

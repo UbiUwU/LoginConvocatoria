@@ -60,8 +60,14 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+
 
 // Dependencias adicionales
+    implementation("androidx.compose.material:material:1.5.1")
     implementation ("androidx.compose.foundation:foundation:1.7.3")
     implementation ("androidx.compose.runtime:runtime-livedata:1.7.3")
     implementation ("io.coil-kt:coil-compose:2.7.0")
@@ -69,7 +75,8 @@ dependencies {
     implementation ("androidx.navigation:navigation-compose:2.5.3")
     implementation(libs.firebase.crashlytics)
     implementation(libs.generativeai)
-    implementation(libs.firebase.vertexai) // o la última versión disponible
+    implementation(libs.firebase.vertexai)
+    implementation(libs.androidx.ui.test.android)
     val nav_version = "2.8.0"
 
     // Jetpack Compose integration

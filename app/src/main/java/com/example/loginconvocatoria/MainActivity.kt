@@ -1,5 +1,6 @@
 package com.example.loginconvocatoria
 
+import BottomNavigationBar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,6 +19,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.loginconvocatoria.components.Menu_Lateral
 import com.example.loginconvocatoria.components.TopBar
 import com.example.loginconvocatoria.navigation.BancoNav
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,8 +57,11 @@ fun Contenido(
 ) {
     Scaffold(
         topBar = {
-            TopBar(drawerState, navController) // Llama a la TopBar
+            TopBar(drawerState, navController) // Mantén la TopBar
         },
+        bottomBar = {
+            BottomNavigationBar(navController = navController) // Añade la BottomNavigationBar
+        }
     ) { paddingValues ->
         // Contenedor principal de la pantalla
         Box(
@@ -63,8 +69,15 @@ fun Contenido(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            // Aquí es donde se muestran las pantallas de navegación
+            // Navegación principal
             BancoNav(navController = navController)
         }
     }
 }
+
+
+
+
+
+
+

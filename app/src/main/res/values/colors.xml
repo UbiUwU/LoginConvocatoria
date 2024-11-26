@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    //Colores añadidos
+    <color name="rojo_vino">#800000</color> <!--Color chevere para el TopBar-->
+    <color name="darkGray">#5b5b5b</color> <!--Color para el MenuLateral-->
+
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

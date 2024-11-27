@@ -140,6 +140,6 @@ private fun navigateToRoute(
             launchSingleTop = true
             restoreState = true
         }
-        drawerState.close() // Cierra el menú lateral después de la navegación
+        drawerState.close()
     }
 }

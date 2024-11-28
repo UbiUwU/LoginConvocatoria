@@ -64,7 +64,7 @@ fun AgendaVisua(
 
         AgendaInfoCardV(
             title = "Información general de la agenda",
-            action = "Acción regulatoria: $accionRegu",
+            action = "Materia de regulación: $accionRegu",
             responsiblePerson = "Nombre y cargo de la persona responsable de la propuesta:",
             responsibleInfo = "$responsableElabInfo",
             responsableElab = "Nombre y cargo de la persona responsable de la elaboración de la propuesta:",
@@ -75,8 +75,6 @@ fun AgendaVisua(
 
         ProposalDetailsCardV(
             title = "Información sobre la agenda",
-            details = "Detalles de la propuesta:",
-            detailsContent = "Lorem ipsum dolor sit amet...",
             problem = "Problema que se pretende resolver con la propuesta:",
             problemContent = "$problematicaResol",
             justification = "Justificación para emitir:",
@@ -147,7 +145,7 @@ fun AgendaInfoCardV(title: String, action: String, responsiblePerson: String, re
 
 @Composable
 fun ProposalDetailsCardV(
-    title: String, details: String, detailsContent: String,
+    title: String,
     problem: String, problemContent: String,
     justification: String, justificationContent: String,
     benefits: String, benefitsContent: String,
@@ -162,7 +160,7 @@ fun ProposalDetailsCardV(
             Text(text = title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
             Spacer(modifier = Modifier.height(8.dp))
 
-            DetailSectionV(header = details, content = detailsContent)
+
             DetailSectionV(header = problem, content = problemContent)
             DetailSectionV(header = justification, content = justificationContent)
             DetailSectionV(header = benefits, content = benefitsContent)

@@ -1,7 +1,11 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.loginconvocatoria.ui.ui
 
 import android.app.DatePickerDialog
 import android.net.Uri
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -20,8 +24,12 @@ import java.util.Calendar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.loginconvocatoria.R
 
 @Composable
 fun CardComponent(title: String, content: @Composable () -> Unit) {
@@ -29,6 +37,9 @@ fun CardComponent(title: String, content: @Composable () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
+             colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.rojo_vino)  // Fondo de la tarjeta
+        ),
         elevation = CardDefaults.cardElevation(6.dp)
     ) {
         Column(
@@ -38,12 +49,39 @@ fun CardComponent(title: String, content: @Composable () -> Unit) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = colorResource(id = R.color.white),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             content()
         }
     }
+}
+@Composable
+fun CustomOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        textStyle = TextStyle(
+            color = colorResource(id = R.color.white), // Color del texto ingresado
+        ),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = colorResource(id = R.color.amarillo), // Color del borde cuando está enfocado
+            unfocusedBorderColor = colorResource(id = R.color.white), // Color del borde cuando no está enfocado
+            cursorColor = colorResource(id = R.color.white), // Color del cursor
+            focusedLabelColor = colorResource(id = R.color.white), // Color de la etiqueta cuando está enfocado
+            unfocusedLabelColor = colorResource(id = R.color.white), // Color de la etiqueta cuando no está enfocado
+
+        )
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,7 +150,11 @@ fun DropdownMenuComponent(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),  // Mantiene el tamaño al 100% del ancho disponible
             contentPadding = PaddingValues(16.dp),
-            shape = RoundedCornerShape(6.dp)  // Bordes redondeados
+            shape = RoundedCornerShape(6.dp),  // Bordes redondeados
+            colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.amarillo),  // Fondo
+            contentColor = Color.White  // Color del texto
+            )
         ) {
             // Coloca el label en la parte superior del Button
             Column(
@@ -133,7 +175,10 @@ fun DropdownMenuComponent(
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = "Expand Dropdown",
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(24.dp) // Ajustar tamaño del ícono
+                            .graphicsLayer { rotationZ = if (expanded) 90f else 0f } // Rotar el ícono según el estado
                     )
                 }
             }
@@ -145,26 +190,39 @@ fun DropdownMenuComponent(
             onDismissRequest = { expanded = false },
             modifier = Modifier
                 .fillMaxWidth() // Ajustar el Dropdown al ancho disponible
+                .background(Color.Transparent) // Cambiar el fondo del menú
         ) {
-            items.forEach { item ->
+            items.forEachIndexed { index, item ->
+                val shape = when (index) {
+                    0 -> RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp) // Primer item con bordes redondeados en la parte superior
+                    items.size - 1 -> RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp) // Último item con bordes redondeados en la parte inferior
+                    else -> RoundedCornerShape(0.dp) // Items intermedios sin bordes redondeados
+                }
                 DropdownMenuItem(
-                    text = { Text(item) },
+                    text = { Text(item,
+                        color =  colorResource(id = R.color.white)) },
                     onClick = {
                         onOptionSelected(item)
                         expanded = false
-                    }
+                    },
+                    modifier = Modifier
+
+                        .background(colorResource(id = R.color.amarillo), shape = shape) // Aplica el shape según la posición
+                        .border(2.dp, Color.White, shape) // Borde blanco con la misma forma
+                        .fillMaxWidth() // Ocupar todo el ancho disponible
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreationAgend(navController: NavController) {
     var NombrePrePro by remember { mutableStateOf("") }
     var FechaPre by remember { mutableStateOf("") }
     var AccionRegu by remember { mutableStateOf("Selecciona una opción") }
-    var MateriaSoVaRe by remember { mutableStateOf("") }
+
 
     var DescripcionProRe by remember { mutableStateOf("") }
     var ProblematicaResol by remember { mutableStateOf("") }
@@ -180,6 +238,13 @@ fun CreationAgend(navController: NavController) {
     var ResponsableQuienE by remember { mutableStateOf("") }
     var FechaSioNo by remember { mutableStateOf("") }
 
+
+    // Define la lista de opciones de manera separada
+    val optionsList = listOf("Opción 1", "Opción 2", "Opción 3")
+
+    // Estado para la opción seleccionada
+    var MateriaSoVaRe by remember { mutableStateOf(optionsList[0]); mutableStateOf("Selecciona una opción") }
+
     var currentSection by remember { mutableStateOf(1) }
     Column(
         modifier = Modifier
@@ -190,93 +255,78 @@ fun CreationAgend(navController: NavController) {
         // Mostrar el contenido basado en la sección actual
         when (currentSection) {
             1 -> {
-                CardComponent(title = "Detalles del Proyecto") {
+                CardComponent(title = "Detalles de la agenda") {
                     OutlinedTextField(
                         value = NombrePrePro,
                         onValueChange = { NombrePrePro = it },
                         label = { Text("Nombre del Proyecto")},
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 16.dp)
+                            .padding(bottom = 8.dp),
+                        textStyle = TextStyle(
+                            color = colorResource(id = R.color.white), // Color del texto ingresado
+                        ),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = colorResource(id = R.color.amarillo), // Color del borde cuando está enfocado
+                            unfocusedBorderColor = colorResource(id = R.color.white), // Color del borde cuando no está enfocado
+                            cursorColor = colorResource(id = R.color.white), // Color del cursor
+                            focusedLabelColor = colorResource(id = R.color.white), // Color de la etiqueta cuando está enfocado
+                            unfocusedLabelColor = colorResource(id = R.color.white), // Color de la etiqueta cuando no está enfocado
+
+                        )
                     )
-                    Row(
+                    // Dropdown de acción regulatoria con el Button
+                    DropdownMenuComponent(
+                        label = "Materia de regulación",
+                        items = optionsList,
+                        selectedOption = MateriaSoVaRe,
+                        onOptionSelected = { MateriaSoVaRe = it },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // Campo de fecha de presentación
-                        DateField(
-                            label = "Fecha de Presentación",
-                            selectedDate = FechaPre,
-                            onDateSelected = { FechaPre = it },
-                            modifier = Modifier.weight(1f)  // Se ajusta para ocupar el mismo espacio
-                        )
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        // Dropdown de acción regulatoria con el Button
-                        DropdownMenuComponent(
-                            label = "Acción Regulatoria",
-                            items = listOf("Opción 1", "Opción 2", "Opción 3"),
-                            selectedOption = AccionRegu,
-                            onOptionSelected = { AccionRegu = it },
-                            modifier = Modifier.weight(1f)
-                                .padding(top = 9.dp)
-                        )
-                    }
-
-                    OutlinedTextField(
-                        value = MateriaSoVaRe,
-                        onValueChange = { MateriaSoVaRe = it },
-                        label = { Text("Materia SoVaRe") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
+                            .padding(bottom = 8.dp)
                     )
                 }
             }
 
             2 -> {
                 CardComponent(title = "Datos de explicacion") {
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = DescripcionProRe,
                         onValueChange = { DescripcionProRe = it },
-                        label = { Text("Descripción de la agenda") },
+                        label = "Descripción de la agenda",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
 
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = ProblematicaResol,
                         onValueChange = { ProblematicaResol = it },
-                        label = { Text("Problema que se pretende resolver") },
+                        label = "Problema que se pretende resolver",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = Justificacion,
                         onValueChange = { Justificacion = it },
-                        label = { Text("Justificación para emitir") },
+                        label ="Justificación para emitir",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = Beneficios,
                         onValueChange = { Beneficios = it },
-                        label = { Text("Beneficios que generará") },
+                        label = "Beneficios que generará",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = FundamentosJurid,
                         onValueChange = { FundamentosJurid = it },
-                        label = { Text("Fundamentos jurídicos") },
+                        label = "Fundamentos jurídicos",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
@@ -286,80 +336,43 @@ fun CreationAgend(navController: NavController) {
 
             3 -> {
                 // Nueva Card para información adicional
-                CardComponent(title = "Fechas") {
-                    // Nombre del Proyecto - Parte superior centrado
-                    OutlinedTextField(
-                        value = FechaSioNo,
-                        onValueChange = { FechaSioNo = it },
-                        label = { Text("Fechas de si o no ....................") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp)
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        DateField(
-                            label = "Fecha de Presentación para la AIR",
-                            selectedDate = FechaTentaAIR,
-                            onDateSelected = { FechaTentaAIR = it },
-                            modifier = Modifier.weight(1f)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        DateField(
-                            label = "Fecha de Presentación para el periodico",
-                            selectedDate = FechaTentaPOE,
-                            onDateSelected = { FechaTentaPOE = it },
-                            modifier = Modifier.weight(1f)
-                        )
-
-                    }
-                }
-            }
-
-            4 -> {
-                // Nueva Card para información adicional
                 CardComponent(title = "Información Adicional") {
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = SujetoObli,
                         onValueChange = { SujetoObli = it },
-                        label = { Text("Sujeto obligado") },
+                        label = "Sujeto obligado",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = ResponsableElab,
                         onValueChange = { ResponsableElab = it },
-                        label = { Text("Responsable cargo de la persona responsable oficial de mejora regulatoria.") },
+                        label = "Responsable cargo de la persona responsable oficial de mejora regulatoria.",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = ResponsableElabInfo,
                         onValueChange = { ResponsableElabInfo = it },
-                        label = { Text("Responsable cargo de la persona responsable oficial de mejora regulatoria.") },
+                        label = "Responsable cargo de la persona responsable oficial de mejora regulatoria.",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = ResponsableInsti,
                         onValueChange = { ResponsableInsti = it },
-                        label = { Text("Responsable cargo de la persona responsable oficial de mejora regulatoria.") },
+                        label = "Responsable cargo de la persona responsable oficial de mejora regulatoria.",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = ResponsableQuienE,
                         onValueChange = { ResponsableQuienE = it },
-                        label = { Text("Responsable cargo de la persona responsable cargo de quien elaboró.") },
+                        label = "Responsable cargo de la persona responsable cargo de quien elaboró.",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
@@ -377,13 +390,17 @@ fun CreationAgend(navController: NavController) {
             // Botón "Anterior" (desactivado si está en la primera sección)
             Button(
                 onClick = { currentSection -= 1 },
-                enabled = currentSection > 1
+                enabled = currentSection > 1, //  Solo habilitado si no está en la última sección
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.amarillo), // Fondo del botón
+                    contentColor = colorResource(id = R.color.white) // Color del texto
+                )
             ) {
                 Text("Anterior")
             }
 
             // Botón "Enviar" (solo visible en la última sección)
-            if (currentSection == 4) {
+            if (currentSection == 3) {
                 Button(
                     onClick = {
                         val encodedUrl = "${Uri.encode(NombrePrePro)}/${Uri.encode(FechaPre)}/${Uri.encode(AccionRegu)}/${Uri.encode(MateriaSoVaRe)}/" +
@@ -403,7 +420,11 @@ fun CreationAgend(navController: NavController) {
             // Botón "Siguiente" (desactivado si está en la última sección)
             Button(
                 onClick = { currentSection += 1 },
-                enabled = currentSection < 4
+                enabled = currentSection < 3, // Solo habilitado si no está en la última sección
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.amarillo), // Fondo del botón
+                    contentColor = colorResource(id = R.color.white) // Color del texto
+                )
             ) {
                 Text("Siguiente")
             }

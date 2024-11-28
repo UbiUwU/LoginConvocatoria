@@ -47,6 +47,5 @@ fun BancoNav(
             Notifications()
         }
         agendaVisuaRoute(navController)
-
     }
 }

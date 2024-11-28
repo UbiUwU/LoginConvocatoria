@@ -16,6 +16,6 @@ data class BottomNavItem(
 val bottomNavItems = listOf(
     BottomNavItem("Inicio", "home_screen", Icons.Default.Home),
     BottomNavItem("Ruta 1", "ruta1", Icons.Default.List),
-    BottomNavItem("Ruta 2", "ruta2", Icons.Default.Add),
+    BottomNavItem("Creation_Agen", "Creation_Agend", Icons.Default.Add),
     BottomNavItem("Notificaciones", "Notifications", Icons.Default.Notifications)
 )

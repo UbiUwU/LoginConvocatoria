@@ -113,7 +113,7 @@ fun DropdownMenuComponentP(
 @Composable
 fun PageContent() {
     // Variable temporal para determinar el rol del usuario
-    val userRole = "admin" // Cambia a "admin" según la necesidad
+    val userRole = "client" // Cambia a "admin" según la necesidad
 
     when (userRole) {
         "client" -> ClientScreen()
@@ -321,6 +321,7 @@ fun AdminScreen() {
 
 
 // Contenido del cuadro de comentarios
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsSection(comments: List<Pair<String, String>>, onAddComment: (String) -> Unit) {
     var newComment by remember { mutableStateOf("") }
@@ -342,6 +343,17 @@ fun CommentsSection(comments: List<Pair<String, String>>, onAddComment: (String)
             onValueChange = { newComment = it },
             label = { Text("Escribe un comentario") },
             modifier = Modifier.fillMaxWidth(),
+            textStyle = TextStyle(
+                color = colorResource(id = R.color.black), // Color del texto ingresado
+            ),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = colorResource(id = R.color.amarillo), // Color del borde cuando está enfocado
+                unfocusedBorderColor = colorResource(id = R.color.black), // Color del borde cuando no está enfocado
+                cursorColor = colorResource(id = R.color.black), // Color del cursor
+                focusedLabelColor = colorResource(id = R.color.black), // Color de la etiqueta cuando está enfocado
+                unfocusedLabelColor = colorResource(id = R.color.black), // Color de la etiqueta cuando no está enfocado
+
+            ),
             trailingIcon = {
                 IconButton(onClick = {
                     if (newComment.isNotBlank()) {
@@ -361,11 +373,23 @@ fun CommentsSection(comments: List<Pair<String, String>>, onAddComment: (String)
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            TextButton(onClick = { /* Filtrar comentarios recientes */ }) {
-                Text("Recientes")
+            TextButton(
+                onClick = { /* Filtrar comentarios recientes */ },
+                modifier = Modifier
+                    .background(colorResource(id = R.color.amarillo)) // Aquí aplicas el color de fondo
+                    .padding(8.dp),
+
+            ) {
+                Text("Recientes", color = Color.White) // Puedes ajustar el color del texto si lo deseas
             }
-            TextButton(onClick = { /* Filtrar comentarios populares */ }) {
-                Text("Populares")
+
+            TextButton(
+                onClick = { /* Filtrar comentarios populares */ },
+                modifier = Modifier
+                    .background(colorResource(id = R.color.amarillo)) // Aplica el color de fondo
+                    .padding(8.dp)
+            ) {
+                Text("Populares", color = Color.White) // Ajusta el color del texto si lo deseas
             }
         }
 

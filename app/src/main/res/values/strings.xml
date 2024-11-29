@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">CEMER Quintana Roo</string>
     <string-array name="dropdown_options">
         <item>Opción 1</item>
         <item>Opción 2</item>

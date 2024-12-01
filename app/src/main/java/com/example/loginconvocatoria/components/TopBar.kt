@@ -57,12 +57,13 @@ fun TopBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp) // Altura de la barra superior
+            .shadow(5.dp)
             .background(Color.White) // Fondo blanco
-            .padding(bottom = 5.dp)
 
 
     ) {
         // Borde inferior rojo vino
+        /*
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -71,6 +72,7 @@ fun TopBar(
                 .align(Alignment.BottomCenter)
 
         )
+        */
 
         // Ícono del menú (izquierda)
         IconButton(

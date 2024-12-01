@@ -71,7 +71,7 @@ fun Menu_Lateral(
                             .padding(start = 16.dp, end = 16.dp)  // Espaciado interno
                     )
 
-                    // Opciones de navegación
+
                     menuItems.forEach { item ->
                         NavigationDrawerItem(
                             icon = {

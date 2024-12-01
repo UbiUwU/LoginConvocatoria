@@ -2,118 +2,171 @@ package com.example.loginconvocatoria.ui.ui
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.loginconvocatoria.R
 
 @Composable
-fun Registro(
-    navController: NavHostController
-) {
-    var Nombres by remember { mutableStateOf("") }
-    var Apellido1 by remember { mutableStateOf("") }
-    var Apellido2 by remember { mutableStateOf("") }
-    var Telefono by remember { mutableStateOf("") }
-    var Correo by remember { mutableStateOf("") }
+fun Registro(navController: NavHostController) {
+    var nombres by remember { mutableStateOf("") }
+    var apellido1 by remember { mutableStateOf("") }
+    var apellido2 by remember { mutableStateOf("") }
+    var telefono by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    // Fondo degradado para la pantalla
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        colorResource(id = R.color.rojo_vino),
+                        Color.White
+                    )
+                )
+            )
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo2),
-            contentDescription = "Login image",
-            modifier = Modifier.size(200.dp)
-        )
-        Text(text = "Bienvenido", fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Registro: ")
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = Nombres,
-            onValueChange = { Nombres = it },
-            label = { Text(text = "Nombres") }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = Apellido1,
-            onValueChange = { Apellido1 = it },
-            label = { Text(text = "Primer Apellido") }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = Apellido2,
-            onValueChange = { Apellido2 = it },
-            label = { Text(text = "Segundo Apellido") }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = Telefono,
-            onValueChange = { Telefono = it },
-            label = { Text(text = "Telefono") }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = Correo,
-            onValueChange = { Correo = it },
-            label = { Text(text = "Correo electrónico") }
-        )
-        Row(
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Encabezado con logo
+            Image(
+                painter = painterResource(id = R.drawable.cemer_qro),
+                contentDescription = "Logo de registro",
+                modifier = Modifier
+                    .size(150.dp)
+                    .shadow(8.dp, RoundedCornerShape(50))
+            )
+            Text(
+                text = "¡Crea tu cuenta!",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+            Text(
+                text = "Llena los datos para registrarte",
+                fontSize = 16.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Campos de entrada
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(15.dp),
-        horizontalArrangement = Arrangement.Center // Centrar los botones horizontalmente
-        ) {
-        Button(
-            onClick = {
-                Log.i("Creditar", "Nombres: $Nombres Primer apellido: $Apellido1 Segundo Apellido: $Apellido2 Telefono $Telefono Correo: $Correo")
-                navController.navigate("home_screen")
-            },
-            modifier = Modifier.padding(end = 16.dp) // Añadir espacio entre botones
-        ) {
-            Text(text = "Registrarse")
-        }
-        Button(onClick = {
-            navController.navigate("Ruta1") // Navegar a PageContent
-        }) {
-            Text(text = "Iniciar sesión")
-        }
-    }
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(text = "Resgistrarte con:")
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(40.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.fb),
-                contentDescription = "Facebook",
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(16.dp)
+            ) {
+                OutlinedTextField(
+                    value = nombres,
+                    onValueChange = { nombres = it },
+                    label = { Text(text = "Nombres") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = apellido1,
+                    onValueChange = { apellido1 = it },
+                    label = { Text(text = "Primer Apellido") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = apellido2,
+                    onValueChange = { apellido2 = it },
+                    label = { Text(text = "Segundo Apellido") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = telefono,
+                    onValueChange = { telefono = it },
+                    label = { Text(text = "Teléfono") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = correo,
+                    onValueChange = { correo = it },
+                    label = { Text(text = "Correo Electrónico") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text(text = "Contraseña") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Mensaje de error
+            if (errorMessage.isNotEmpty()) {
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
+            // Botón "Regístrate"
+            Button(
+                onClick = {
+                    if (nombres.isNotEmpty() && apellido1.isNotEmpty() && telefono.isNotEmpty() && correo.isNotEmpty() && password.isNotEmpty()) {
+                        Log.i("Registro", "Usuario registrado: $nombres $apellido1 $apellido2")
+                        navController.navigate("home_screen")
+                    } else {
+                        errorMessage = "Por favor, completa todos los campos."
+                    }
+                },
                 modifier = Modifier
-                    .size(60.dp)
-                    .clickable { }
-            )
-            Image(
-                painter = painterResource(id = R.drawable.google),
-                contentDescription = "Google",
-                modifier = Modifier
-                    .size(60.dp)
-                    .clickable { }
-            )
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.rojo_vino)
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(text = "Regístrate", color = Color.White, fontSize = 16.sp)
+            }
+
+
+
         }
     }
 }

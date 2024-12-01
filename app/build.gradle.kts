@@ -68,6 +68,7 @@ dependencies {
 
 // Dependencias adicionales
     implementation("androidx.compose.material:material:1.5.1")
+    implementation ("androidx.compose.material:material-icons-extended:1.0.0")
     implementation ("androidx.compose.foundation:foundation:1.7.3")
     implementation ("androidx.compose.runtime:runtime-livedata:1.7.3")
     implementation ("io.coil-kt:coil-compose:2.7.0")
@@ -77,6 +78,11 @@ dependencies {
     implementation(libs.generativeai)
     implementation(libs.firebase.vertexai)
     implementation(libs.androidx.ui.test.android)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.transition)
+    implementation(libs.androidx.transition)
+    implementation(libs.androidx.transition)
+    implementation(libs.androidx.transition)
     val nav_version = "2.8.0"
 
     // Jetpack Compose integration

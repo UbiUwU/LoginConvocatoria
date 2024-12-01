@@ -9,19 +9,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.loginconvocatoria.ui.ui.PageContent
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.Dialog
+import com.example.loginconvocatoria.R
 
-// Definimos las rutas de las pantallas
+
 sealed class ScreenN(val route: String) {
     object MenuScreen : ScreenN("menu")
     object DetailScreen : ScreenN("detail/{itemId}") {
@@ -55,97 +57,114 @@ fun MainScreenN(navController: NavHostController) {
 fun Notifications() {
     var selectedNotification by remember { mutableStateOf<NotificationData?>(null) }
 
-    Column(
+    // Fondo de pantalla con un encabezado visualmente atractivo
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
-        Text(
-            text = "Notificaciones",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        LazyColumn(
+        Column(
             modifier = Modifier
-                .weight(1f)
+                .fillMaxSize()
         ) {
-            items(10) { index ->
-                NotificationCard(
-                    title = "Notificación $index",
-                    description = "Esta es una descripción breve de la notificación. Puedes tocarla para más detalles.",
-                    date = "2024-11-21",
-                    time = "14:35",
-                    onClick = {
-                        selectedNotification = NotificationData(
-                            title = "Notificación $index",
-                            description = "Esta es la descripción completa de la notificación $index. Aquí puedes ver más información detallada.",
-                            date = "2024-11-21",
-                            time = "14:35"
-                        )
+            // Encabezado
+            Text(
+                text = "Notificaciones",
+                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+                color = Color.Black, // Letras en negro para mejor visibilidad
+                modifier = Modifier
+                    .padding(vertical = 16.dp) // Espaciado alrededor del texto
+                    .align(Alignment.CenterHorizontally) // Centrado horizontal
+            )
+
+            // Lista de notificaciones
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(top = 8.dp)
+            ) {
+                items(10) { index ->
+                    NotificationCard(
+                        title = "Notificación $index",
+                        description = "Descripción breve de la notificación. Toca para más detalles.",
+                        date = "2024-11-21",
+                        time = "14:35",
+                        onClick = {
+                            selectedNotification = NotificationData(
+                                title = "Notificación $index",
+                                description = "Esta es la descripción completa de la notificación $index. Aquí puedes ver más información detallada.",
+                                date = "2024-11-21",
+                                time = "14:35"
+                            )
+                        }
+                    )
+                }
+            }
+
+            // Diálogo de notificación seleccionada
+            selectedNotification?.let { notification ->
+                NotificationDialog(
+                    notification = notification,
+                    onDismiss = { selectedNotification = null },
+                    onMarkAsSeen = {
+                        selectedNotification = null
                     }
                 )
-
             }
-        }
-
-        // Mostrar diálogo si hay una notificación seleccionada
-        selectedNotification?.let { notification ->
-            NotificationDialog(
-                notification = notification,
-                onDismiss = { selectedNotification = null },
-                onMarkAsSeen = {
-                    selectedNotification = null
-                }
-            )
         }
     }
 }
 
 @Composable
-fun NotificationCard(title: String, description: String, date: String, time: String, onClick: () -> Unit) {
+fun NotificationCard(
+    title: String,
+    description: String,
+    date: String,
+    time: String,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            .padding(vertical = 12.dp, horizontal = 16.dp), // Márgenes ajustados para tarjetas más grandes
+        elevation = CardDefaults.cardElevation(6.dp), // Suavizar la sombra pero mantener un poco
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = MaterialTheme.shapes.small // Bordes más cuadrados
     ) {
         Row(
-            modifier = Modifier
-                .padding(16.dp),
+            modifier = Modifier.padding(20.dp), // Padding interno más amplio
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = Icons.Default.Notifications,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(40.dp)
+                tint = Color(0xFF8B0000), // Rojo vino
+                modifier = Modifier.size(50.dp) // Ícono más grande
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
-
+            Spacer(modifier = Modifier.width(20.dp)) // Mayor espacio entre el ícono y el texto
             Column {
-                Text(text = title, style = MaterialTheme.typography.titleMedium)
-                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "$date • $time",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.Black, // Color negro para el título
+                    maxLines = 1, // Limitar el título a una línea
+                    overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp)) // Más espacio entre líneas
                 Text(
-                    text = description,
+                    text = "$date en $description",
                     style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 2,
+                    color = Color.Gray,
+                    maxLines = 2, // Descripción limitada a dos líneas
                     overflow = TextOverflow.Ellipsis
                 )
             }
         }
     }
 }
+
+
 
 @Composable
 fun NotificationDialog(
@@ -157,12 +176,9 @@ fun NotificationDialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp) // Aumenta la altura del cuadro de diálogo
                 .padding(16.dp),
             elevation = CardDefaults.cardElevation(8.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.background
-            )
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
                 modifier = Modifier
@@ -172,18 +188,20 @@ fun NotificationDialog(
                 Text(
                     text = notification.title,
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "${notification.date} • ${notification.time}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = notification.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.weight(1f) // Usar el espacio disponible
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
@@ -192,12 +210,18 @@ fun NotificationDialog(
                 ) {
                     Button(
                         onClick = onDismiss,
-                        modifier = Modifier.padding(end = 8.dp)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary
+                        )
                     ) {
                         Text(text = "Cerrar")
                     }
+                    Spacer(modifier = Modifier.width(8.dp))
                     Button(
-                        onClick = onMarkAsSeen
+                        onClick = onMarkAsSeen,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
                     ) {
                         Text(text = "Visto")
                     }
@@ -206,6 +230,7 @@ fun NotificationDialog(
         }
     }
 }
+
 
 // Clase de datos para manejar las notificaciones
 data class NotificationData(

@@ -32,7 +32,7 @@ fun ViewConvocatorias(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            //.padding(16.dp) //padding innecesario
     ) {
         // Comprobamos si hay datos o si están cargando
         if (solicitudes.isEmpty()) {

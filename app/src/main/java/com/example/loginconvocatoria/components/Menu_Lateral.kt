@@ -44,7 +44,7 @@ fun Menu_Lateral(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet(
+            Box(
                 modifier = Modifier
                     .fillMaxHeight(1.0f)
                     .fillMaxWidth(0.70f) // Ancho del menú lateral

@@ -54,7 +54,7 @@ fun Notifications() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF3F4F6)) // Fondo general claro
-            .padding(16.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
     ) {
         Column {
             Text(

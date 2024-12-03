@@ -19,10 +19,10 @@ import androidx.navigation.NavHostController
 @Composable
 fun DashboardScreen(navController: NavHostController) {
     val items = listOf(
-        DashboardItem("Perfil", R.drawable.dash1),
-        DashboardItem("Configuración", R.drawable.dash2),
-        DashboardItem("Notificaciones", R.drawable.dash3),
-        DashboardItem("Ayuda", R.drawable.dash4),
+        DashboardItem("Perfil", R.drawable.perfil),
+        DashboardItem("Gestionar Agendas", R.drawable.gestionar_agenda),
+        DashboardItem("Ver Publicicacion", R.drawable.ver_publicacion),
+        DashboardItem("Ayuda", R.drawable.ayuda),
         // Agrega más elementos según necesites
     )
 
@@ -32,7 +32,7 @@ fun DashboardScreen(navController: NavHostController) {
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2), // Dos columnas
-            verticalArrangement = Arrangement.SpaceEvenly, // Distribuye verticalmente
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp),
             modifier = Modifier.fillMaxSize()
@@ -56,9 +56,9 @@ fun DashboardCard(item: DashboardItem, navController: NavHostController) {
                 // Maneja la navegación según el elemento
                 when (item.title) {
                     "Perfil" -> navController.navigate("profile_screen")
-                    "Configuración" -> navController.navigate("settings_screen")
-                    "Notificaciones" -> navController.navigate("notifications_screen")
-                    "Ayuda" -> navController.navigate("help_screen")
+                    "Gestionar Agendas" -> navController.navigate("Gestionar_Agendas")
+                    "Ver Publicicacion" -> navController.navigate("home_screen")
+                    "Ayuda" -> navController.navigate("Dudas_Informacion")
                     // Agrega más casos según necesites
                 }
             },

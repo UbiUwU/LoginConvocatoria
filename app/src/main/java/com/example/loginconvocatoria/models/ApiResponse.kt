@@ -36,3 +36,4 @@ data class Solicitud(
     val cargo_titular: String,
     val publicacion: String
 )
+

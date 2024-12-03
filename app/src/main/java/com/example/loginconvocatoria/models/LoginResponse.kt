@@ -8,6 +8,7 @@ data class LoginResponse(
 
 data class Usuario(
     val idUsuario: Int,
+    val apellidoPaterno: String,
     val nombreUsuario: String,
     val email: String,
     val rol: String

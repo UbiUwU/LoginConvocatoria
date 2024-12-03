@@ -2,7 +2,6 @@
 package com.example.loginconvocatoria.ui
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,7 +17,6 @@ import androidx.compose.material3.*
 import com.example.loginconvocatoria.R
 import com.example.loginconvocatoria.api.LoginRetrofitClient
 import com.example.loginconvocatoria.models.SolicitudAgenda
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -100,6 +98,8 @@ fun CreateSolicitudScreen(navController: NavController) {
                     isLoading = true
                     enviarSolicitud(
                         solicitud = SolicitudAgenda(
+                            //tener en cuenta que se agrego id
+
                             usuario_id = usuarioId.text.toInt(),
                             homoclave_formato = homoclaveFormato.text,
                             nombre_responsable_oficial = nombreResponsableOficial.text,
@@ -146,8 +146,7 @@ fun CreateSolicitudScreen(navController: NavController) {
     }
 }
 
-
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormField(label: String, value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit) {
     OutlinedTextField(
@@ -162,8 +161,6 @@ fun FormField(label: String, value: TextFieldValue, onValueChange: (TextFieldVal
         )
     )
 }
-
-
 
 // Validar campos requeridos
 fun areFieldsValid(vararg fields: String): Boolean = fields.all { it.isNotEmpty() }

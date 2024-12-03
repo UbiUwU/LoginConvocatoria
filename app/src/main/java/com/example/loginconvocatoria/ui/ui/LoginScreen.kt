@@ -63,7 +63,7 @@ fun LoginScreen(
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
                     Log.i("Login", "Inicio de sesión exitoso: ${loginResponse?.usuario?.nombreUsuario}")
-                    navController.navigate("home_screen")
+                    navController.navigate("Dashboard")
                 } else {
                     Log.e("Login", "Error en el inicio de sesión: ${response.code()}")
                     errorMessage = "Credenciales incorrectas"

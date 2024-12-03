@@ -13,6 +13,8 @@ enum class NavScreen(val route: String) {
     AgendasFinal("Agendas_Final"),
     Notifications("Notifications"),
     DashboardScreen("Dashboard"),
+    UserProfileScreen("Perfil_Usuario"),
+    ManageSolicitudesScreen("Administrar"),
     SuccessScreen("Pantalla_Exito")
 
 

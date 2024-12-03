@@ -1,4 +1,13 @@
 package com.example.loginconvocatoria.models
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.annotations.JsonAdapter
+import java.lang.reflect.Type
+
 
 data class SolicitudAgenda(
     val usuario_id: Int,
@@ -22,5 +31,25 @@ data class SolicitudAgenda(
     val cargo_responsable_elabora: String,
     val nombre_titular: String,
     val cargo_titular: String,
+    @JsonAdapter(BooleanAdapter::class) // Usa el adaptador para convertir números a booleanos
     val publicacion: Boolean
 )
+
+class BooleanAdapter : JsonDeserializer<Boolean>, JsonSerializer<Boolean> {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Boolean {
+        return when (val value = json?.asJsonPrimitive) {
+            null -> false
+            else -> {
+                try {
+                    value.asBoolean
+                } catch (e: Exception) {
+                    value.asInt != 0 // Convierte 0/1 en booleano
+                }
+            }
+        }
+    }
+
+    override fun serialize(src: Boolean?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        return JsonPrimitive(src ?: false)
+    }
+}

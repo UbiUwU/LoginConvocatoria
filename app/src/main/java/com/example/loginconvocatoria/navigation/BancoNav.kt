@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.loginconvocatoria.screens.DudasInformacion
+import com.example.loginconvocatoria.screens.GestionarAgendaScreen
 import com.example.loginconvocatoria.screens.HomeScreen
 import com.example.loginconvocatoria.ui.ui.PageContent
 import com.example.loginconvocatoria.screens.Ruta1
@@ -13,9 +14,7 @@ import com.example.loginconvocatoria.screens.Ruta2
 import com.example.loginconvocatoria.screens.Ruta3
 import com.example.loginconvocatoria.screens.SuccessScreen
 import com.example.loginconvocatoria.ui.CreateSolicitudScreen
-
 import com.example.loginconvocatoria.ui.ui.AgendasFinal
-
 import com.example.loginconvocatoria.ui.ui.LoginScreen
 import com.example.loginconvocatoria.ui.ui.Notifications
 
@@ -63,6 +62,12 @@ fun BancoNav(
         composable("Dashboard") {
             DashboardScreen(navController = navController)
         }
+
+        composable("Gestionar_Agendas") {
+            GestionarAgendaScreen(navController = navController)
+        }
+
+
         composable("Notifications") {
             Notifications()
         }

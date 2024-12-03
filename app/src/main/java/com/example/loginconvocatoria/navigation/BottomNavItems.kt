@@ -14,7 +14,7 @@ data class BottomNavItem(
 )
 //Aqui se le da nombre a los iconos situaos en el bottombar
 val bottomNavItems = listOf(
-    BottomNavItem("", "home_screen", Icons.Default.Home),
     BottomNavItem("", "Creation_Agend", Icons.Default.Add),
+    BottomNavItem("", "Dashboard", Icons.Default.Home),
     BottomNavItem("", "Notifications", Icons.Default.Notifications)
 )

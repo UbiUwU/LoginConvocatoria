@@ -1,5 +1,6 @@
 package com.example.loginconvocatoria.navigation
 
+import DashboardScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -58,6 +59,9 @@ fun BancoNav(
         }
         composable("Dudas_Informacion") {
             DudasInformacion(navController = navController)
+        }
+        composable("Dashboard") {
+            DashboardScreen(navController = navController)
         }
         composable("Notifications") {
             Notifications()

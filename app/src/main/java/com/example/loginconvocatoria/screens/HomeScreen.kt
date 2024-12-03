@@ -20,12 +20,6 @@ fun HomeScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = getTitleForRoute(currentRoute(navController)),
-            fontSize = 26.sp,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-        )
 
         ViewConvocatorias(navController)
     }

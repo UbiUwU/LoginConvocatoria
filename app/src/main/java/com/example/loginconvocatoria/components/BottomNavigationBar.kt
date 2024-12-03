@@ -39,9 +39,11 @@ fun BottomNavigationBar(navController: NavHostController) {
                         Icon(
                             imageVector = item.icon,
                             contentDescription = item.name,
-                            tint = selectedColor
+                            tint = selectedColor,
+                            modifier = Modifier.size(if (isSelected) 48.dp else 24.dp)
                         )
                     },
+                    /*
                     label = {
                         Text(
                             text = item.name,
@@ -49,6 +51,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                             style = if (isSelected) MaterialTheme.typography.h6 else MaterialTheme.typography.body2
                         )
                     },
+                    */
                     selected = isSelected,
                     onClick = {
                         navController.navigate(item.route) {

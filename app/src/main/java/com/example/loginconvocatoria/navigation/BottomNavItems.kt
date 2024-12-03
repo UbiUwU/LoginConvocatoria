@@ -12,10 +12,9 @@ data class BottomNavItem(
     val route: String,
     val icon: ImageVector
 )
-
+//Aqui se le da nombre a los iconos situaos en el bottombar
 val bottomNavItems = listOf(
-    BottomNavItem("Inicio", "home_screen", Icons.Default.Home),
-    BottomNavItem("Ruta 1", "ruta1", Icons.Default.List),
-    BottomNavItem("Creation_Agen", "Creation_Agend", Icons.Default.Add),
-    BottomNavItem("Notificaciones", "Notifications", Icons.Default.Notifications)
+    BottomNavItem("", "home_screen", Icons.Default.Home),
+    BottomNavItem("", "Creation_Agend", Icons.Default.Add),
+    BottomNavItem("", "Notifications", Icons.Default.Notifications)
 )

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.loginconvocatoria.ui.ui.LoginScreen
 
+
 @Composable
 fun Ruta1(navController: NavHostController) {
     Column(

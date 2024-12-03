@@ -113,7 +113,7 @@ fun DropdownMenuComponentP(
 @Composable
 fun PageContent() {
     // Variable temporal para determinar el rol del usuario
-    val userRole = "client" // Cambia a "admin" según la necesidad
+    val userRole = "admin" // Cambia a "admin" según la necesidad
 
     when (userRole) {
         "client" -> ClientScreen()

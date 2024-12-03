@@ -4,14 +4,18 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.loginconvocatoria.screens.DudasInformacion
 import com.example.loginconvocatoria.screens.HomeScreen
 import com.example.loginconvocatoria.ui.ui.PageContent
 import com.example.loginconvocatoria.screens.Ruta1
 import com.example.loginconvocatoria.screens.Ruta2
 import com.example.loginconvocatoria.screens.Ruta3
-import com.example.loginconvocatoria.ui.ui.AgendaVisua
+import com.example.loginconvocatoria.screens.SuccessScreen
+import com.example.loginconvocatoria.ui.CreateSolicitudScreen
+
 import com.example.loginconvocatoria.ui.ui.AgendasFinal
-import com.example.loginconvocatoria.ui.ui.CreationAgend
+
+import com.example.loginconvocatoria.ui.ui.LoginScreen
 import com.example.loginconvocatoria.ui.ui.Notifications
 
 @Composable
@@ -20,8 +24,13 @@ fun BancoNav(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "home_screen"
+        startDestination = "login_screen"
     ) {
+        composable("login_screen") {
+            LoginScreen(navController = navController)
+        }
+
+
         composable("home_screen") {
             HomeScreen(navController = navController)
         }
@@ -38,10 +47,17 @@ fun BancoNav(
             PageContent()
         }
         composable("Creation_Agend") {
-            CreationAgend(navController = navController)
+            CreateSolicitudScreen(navController = navController)
         }
+        composable("success_screen") {
+            SuccessScreen(navController = navController)
+        }
+
         composable("Agendas_Final") {
             AgendasFinal(navController = navController)
+        }
+        composable("Dudas_Informacion") {
+            DudasInformacion(navController = navController)
         }
         composable("Notifications") {
             Notifications()

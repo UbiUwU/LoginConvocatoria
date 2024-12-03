@@ -17,6 +17,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 
 import androidx.compose.ui.unit.sp
@@ -32,20 +33,46 @@ fun ViewConvocatorias(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            //.padding(16.dp) //padding innecesario
+            .padding(horizontal = 16.dp) // Espaciado lateral
     ) {
-        // Comprobamos si hay datos o si están cargando
-        if (solicitudes.isEmpty()) {
-            // Mostramos texto de carga
+        // Encabezado
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 60.dp, max =60.dp) // Altura ajustada para el encabezado
+                .padding(vertical = 8.dp),
+            contentAlignment = Alignment.Center // Centrar el texto en el Box
+        ) {
             Text(
-                text = "Cargando solicitudes...",
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                text = "Agendas Regulatorias Periodo JULIO 2024",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color.Black
             )
+        }
+
+        // Contenido
+        if (solicitudes.isEmpty()) {
+            // Texto de carga
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Cargando solicitudes...",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         } else {
-            // Muestra las solicitudes en una lista
+            // Lista de tarjetas
             LazyColumn(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 8.dp) // Separación entre el encabezado y la lista
             ) {
                 items(solicitudes) { solicitud ->
                     SolicitudCard(
@@ -57,98 +84,67 @@ fun ViewConvocatorias(
                 }
             }
         }
-
-//        // Botón flotante para agregar nuevas agendas
-//        FloatingActionButton(
-//            onClick = { navController.navigate("Creation_Agend") },
-//            modifier = Modifier
-//                .align(Alignment.CenterHorizontally)
-//                .padding(vertical = 16.dp),
-//            containerColor = MaterialTheme.colorScheme.primary
-//        ) {
-//            Icon(
-//                imageVector = Icons.Default.Add,
-//                contentDescription = "Agregar agenda"
-//            )
-        }
     }
-//}
+}
 
-// Composable para mostrar los datos cada solicitud en una tarjeta
+
 @Composable
 fun SolicitudCard(solicitud: Solicitud, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(8.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp), // Bordes redondeados
+        shape = RoundedCornerShape(8.dp), // Bordes ligeramente redondeados
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF800020), // Color rojovino de fondo
-            contentColor = Color.White // Color del texto
+            containerColor = Color.White, // Fondo blanco
+            contentColor = Color.Black // Color del texto
         ),
-        elevation = CardDefaults.cardElevation(12.dp) // Elevación para sombra
+        elevation = CardDefaults.cardElevation(8.dp) // Elevación para sombra
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize() // Llenar todo el espacio del card
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.SpaceBetween // Espaciado uniforme
         ) {
             // Título de la solicitud
             Text(
                 text = solicitud.nombre_preeliminar,
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp),
-                maxLines = 1, // Limitar a una línea
-                overflow = TextOverflow.Ellipsis // Agregar "..." si el texto es demasiado largo
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color.Black,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
-            // Línea divisora
-            Divider(color = Color.White.copy(alpha = 0.5f), thickness = 1.dp)
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Información adicional
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = "Materia: ${solicitud.materia_regulacion}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.White.copy(alpha = 0.8f)
-                    )
-                    Text(
-                        text = "Fecha: ${solicitud.fecha_presentacion}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.White.copy(alpha = 0.8f)
-                    )
-                }
-                // Icono o elemento decorativo
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(
-                            color = Color.White.copy(alpha = 0.2f),
-                            shape = RoundedCornerShape(12.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = solicitud.id.toString(),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.White
-                    )
-                }
-            }
+            Text(
+                text = "Materia: ${solicitud.materia_regulacion}",
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 14.sp),
+                color = Color.Gray,
+                maxLines = 1
+            )
+
+            Text(
+                text = "Fecha: ${solicitud.fecha_presentacion}",
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 14.sp),
+                color = Color.Gray,
+                maxLines = 1
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Fragmento de descripción
             Text(
-                text = solicitud.descripcion_propuesta.take(120) + "...",
+                text = solicitud.descripcion_propuesta.take(80) + "...",
                 style = MaterialTheme.typography.bodySmall.copy(fontSize = 14.sp),
-                color = Color.White.copy(alpha = 0.9f),
-                maxLines = 3, // Mostrar hasta 3 líneas de descripción
+                color = Color.Gray,
+                maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
         }

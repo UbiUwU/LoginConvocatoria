@@ -33,12 +33,14 @@ fun Menu_Lateral(
     drawerState: DrawerState,
     contenido: @Composable () -> Unit
 ) {
+    //Aqui se definen las rutas para el menu lateral
     val scope = rememberCoroutineScope()
     val menuItems = listOf(
-        MenuLateral.Home,
         MenuLateral.Ruta1,
+        MenuLateral.Home,
         MenuLateral.AgendasFinal,
-        MenuLateral.Notifications
+        MenuLateral.Notifications,
+        MenuLateral.DudasInformacion
     )
 
     ModalNavigationDrawer(

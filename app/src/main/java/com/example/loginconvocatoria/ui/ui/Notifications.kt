@@ -1,262 +1,195 @@
 package com.example.loginconvocatoria.ui.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.loginconvocatoria.R
-
 
 sealed class ScreenN(val route: String) {
     object MenuScreen : ScreenN("menu")
     object DetailScreen : ScreenN("detail/{itemId}") {
         fun createRoute(itemId: Int) = "detail/$itemId"
     }
-    object PageContent : ScreenN("page_content") // Nueva pantalla
-    object CreationAgend : ScreenN("Creation_Agend") // Nueva pantalla
 }
 
 // Composable principal con la configuración de navegación
 @Composable
 fun MainScreenN(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.MenuScreen.route) {
-        composable(Screen.MenuScreen.route) {
+    NavHost(navController = navController, startDestination = ScreenN.MenuScreen.route) {
+        composable(ScreenN.MenuScreen.route) {
             Notifications()
         }
-        composable(
-            route = Screen.DetailScreen.route,
-            arguments = listOf(navArgument("itemId") { type = NavType.IntType; defaultValue = -1 })
-        ) { backStackEntry ->
-            val itemId = backStackEntry.arguments?.getInt("itemId") ?: -1
-            DetailScreenN(itemId)
-        }
-        composable(Screen.PageContent.route) {
-            PageContent() // Asegúrate de que PageContent no requiera parámetros
+        composable(ScreenN.DetailScreen.route) {
+            // No se utiliza en esta implementación simplificada
         }
     }
 }
 
 @Composable
 fun Notifications() {
-    var selectedNotification by remember { mutableStateOf<NotificationData?>(null) }
+    val cardsData = listOf(
+        NotificationCardData("¡Te invitamos a participar en la consulta pública de la Agenda Regulatoria!", R.drawable.not1),
+        NotificationCardData("XIII ENCUENTRO ORDINARIO DE LA RED IBEROAMERICANAY DEL CARIBE DE MEJORA REGULATORIA", R.drawable.not2),
+        NotificationCardData("Como parte del Nuevo Acuerdo por el Bienestar y Desarrollo de Quintana Roo, seguimos trabajando en colaboración con los Ayuntamientos.", R.drawable.not3),
+        NotificationCardData("La Comisión Estatal de Mejora Regulatoria te invita a participar en la Consulta Pública de los Programas de Mejora Regulatoria.", R.drawable.not4)
+    )
 
-    // Fondo de pantalla con un encabezado visualmente atractivo
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color(0xFFF3F4F6)) // Fondo general claro
+            .padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            // Encabezado
+        Column {
             Text(
                 text = "Notificaciones",
                 style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
-                color = Color.Black, // Letras en negro para mejor visibilidad
+                color = Color(0xFF3B3B3B), // Texto más oscuro
                 modifier = Modifier
-                    .padding(vertical = 16.dp) // Espaciado alrededor del texto
-                    .align(Alignment.CenterHorizontally) // Centrado horizontal
+                    .padding(bottom = 16.dp)
+                    .align(Alignment.CenterHorizontally)
             )
-
-            // Lista de notificaciones
             LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(top = 8.dp)
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(10) { index ->
-                    NotificationCard(
-                        title = "Notificación $index",
-                        description = "Descripción breve de la notificación. Toca para más detalles.",
-                        date = "2024-11-21",
-                        time = "14:35",
-                        onClick = {
-                            selectedNotification = NotificationData(
-                                title = "Notificación $index",
-                                description = "Esta es la descripción completa de la notificación $index. Aquí puedes ver más información detallada.",
-                                date = "2024-11-21",
-                                time = "14:35"
-                            )
-                        }
-                    )
+                items(cardsData.size) { index ->
+                    val cardData = cardsData[index]
+                    ImprovedNotificationCard(title = cardData.title, imageRes = cardData.imageRes)
                 }
-            }
-
-            // Diálogo de notificación seleccionada
-            selectedNotification?.let { notification ->
-                NotificationDialog(
-                    notification = notification,
-                    onDismiss = { selectedNotification = null },
-                    onMarkAsSeen = {
-                        selectedNotification = null
-                    }
-                )
             }
         }
     }
 }
 
 @Composable
-fun NotificationCard(
-    title: String,
-    description: String,
-    date: String,
-    time: String,
-    onClick: () -> Unit
-) {
+fun ImprovedNotificationCard(title: String, imageRes: Int) {
+    // Estado para controlar el diálogo
+    var showDialog by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(vertical = 12.dp, horizontal = 16.dp), // Márgenes ajustados para tarjetas más grandes
-        elevation = CardDefaults.cardElevation(6.dp), // Suavizar la sombra pero mantener un poco
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = MaterialTheme.shapes.small // Bordes más cuadrados
+            .height(220.dp)
+            .clip(RoundedCornerShape(16.dp)),
+        elevation = CardDefaults.cardElevation(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        Row(
-            modifier = Modifier.padding(20.dp), // Padding interno más amplio
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.Notifications,
-                contentDescription = null,
-                tint = Color(0xFF8B0000), // Rojo vino
-                modifier = Modifier.size(50.dp) // Ícono más grande
-            )
-
-            Spacer(modifier = Modifier.width(20.dp)) // Mayor espacio entre el ícono y el texto
-            Column {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Color.Black, // Color negro para el título
-                    maxLines = 1, // Limitar el título a una línea
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(8.dp)) // Más espacio entre líneas
-                Text(
-                    text = "$date en $description",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray,
-                    maxLines = 2, // Descripción limitada a dos líneas
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-    }
-}
-
-
-
-@Composable
-fun NotificationDialog(
-    notification: NotificationData,
-    onDismiss: () -> Unit,
-    onMarkAsSeen: () -> Unit
-) {
-    Dialog(onDismissRequest = onDismiss) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            elevation = CardDefaults.cardElevation(8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-        ) {
-            Column(
+        Column(modifier = Modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(id = imageRes),
+                contentDescription = title,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(16.dp)
                     .fillMaxWidth()
+                    .height(120.dp)
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            )
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = Color(0xFF3B3B3B),
+                modifier = Modifier
+                    .padding(12.dp)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp), // Espaciado alrededor del botón
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(
-                    text = notification.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "${notification.date} • ${notification.time}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = notification.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.weight(1f)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
+                TextButton(
+                    onClick = { showDialog = true },
+                    modifier = Modifier
+                        .background(Color(0xFFE0E0E0)) // Fondo gris claro para resaltar
+                        .padding(horizontal = 8.dp, vertical = 4.dp) // Aumenta la zona de clic
                 ) {
-                    Button(
-                        onClick = onDismiss,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary
-                        )
-                    ) {
-                        Text(text = "Cerrar")
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(
-                        onClick = onMarkAsSeen,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(text = "Visto")
-                    }
+                    Text("Ver más", color = Color.Black) // Texto negro sobre fondo claro
                 }
             }
         }
     }
-}
 
-
-// Clase de datos para manejar las notificaciones
-data class NotificationData(
-    val title: String,
-    val description: String,
-    val date: String,
-    val time: String
-)
-
-
-
-// Pantalla de detalle de la tarjeta
-@Composable
-fun DetailScreenN(itemId: Int) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(text = "Detail of item with ID: $itemId", style = MaterialTheme.typography.titleLarge)
+    // Mostrar diálogo con imagen completa
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Cerrar", color = Color.Black)
+                }
+            },
+            text = {
+                Image(
+                    painter = painterResource(id = imageRes),
+                    contentDescription = title,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                )
+            }
+        )
     }
 }
 
-// Punto de entrada para la navegación
+
+// Datos de una tarjeta
+data class NotificationCardData(val title: String, val imageRes: Int)
+
+@Composable
+fun SimpleNotificationCard(title: String, imageRes: Int) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp), // Altura fija para un diseño consistente
+        shape = MaterialTheme.shapes.medium, // Bordes redondeados
+        elevation = CardDefaults.cardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White) // Fondo blanco
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Encabezado con menor espacio
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp), // Reduce el padding
+                color = Color.Black
+            )
+            // Imagen con esquinas redondeadas
+            Image(
+                painter = painterResource(id = imageRes),
+                contentDescription = title,
+                contentScale = ContentScale.Crop, // Ajustar la imagen al tamaño del contenedor
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .clip(MaterialTheme.shapes.medium) // Esquinas redondeadas
+            )
+        }
+    }
+}
+
 @Composable
 fun AppNavigationN() {
     val navController = rememberNavController()
-    MainScreen(navController = navController)
+    MainScreenN(navController = navController)
 }

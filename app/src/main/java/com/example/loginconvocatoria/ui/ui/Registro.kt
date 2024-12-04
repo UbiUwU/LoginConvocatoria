@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.loginconvocatoria.R
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Registro(navController: NavHostController) {
     var nombres by remember { mutableStateOf("") }
@@ -37,14 +37,7 @@ fun Registro(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        colorResource(id = R.color.rojo_vino),
-                        Color.White
-                    )
-                )
-            )
+            .background(Color.White)
     ) {
         Column(
             modifier = Modifier
@@ -58,23 +51,22 @@ fun Registro(navController: NavHostController) {
                 painter = painterResource(id = R.drawable.cemer_qro),
                 contentDescription = "Logo de registro",
                 modifier = Modifier
-                    .size(150.dp)
-                    .shadow(8.dp, RoundedCornerShape(50))
+                    .size(200.dp) // Tamaño del logo
             )
             Text(
                 text = "¡Crea tu cuenta!",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
-                modifier = Modifier.padding(top = 16.dp)
+                color = Color.Black,
+                modifier = Modifier.padding(top = 2.dp)
             )
             Text(
                 text = "Llena los datos para registrarte",
                 fontSize = 16.sp,
-                color = Color.White,
+                color = Color.Black,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(24.dp))
+
 
             // Campos de entrada
             Column(
@@ -90,35 +82,55 @@ fun Registro(navController: NavHostController) {
                     value = nombres,
                     onValueChange = { nombres = it },
                     label = { Text(text = "Nombres") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
                     value = apellido1,
                     onValueChange = { apellido1 = it },
                     label = { Text(text = "Primer Apellido") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
                     value = apellido2,
                     onValueChange = { apellido2 = it },
                     label = { Text(text = "Segundo Apellido") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
                     value = telefono,
                     onValueChange = { telefono = it },
                     label = { Text(text = "Teléfono") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
                     value = correo,
                     onValueChange = { correo = it },
                     label = { Text(text = "Correo Electrónico") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
@@ -126,7 +138,11 @@ fun Registro(navController: NavHostController) {
                     onValueChange = { password = it },
                     label = { Text(text = "Contraseña") },
                     visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
             }
 

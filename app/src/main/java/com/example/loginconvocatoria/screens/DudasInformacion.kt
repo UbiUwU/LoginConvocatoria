@@ -45,7 +45,7 @@ fun DudasInformacion(navController: NavHostController) {
         ) {
             // Imagen del encabezado
             Image(
-                painter = painterResource(id = R.drawable.ayuda), // Reemplaza con tu imagen
+                painter = painterResource(id = R.drawable.duda), // Reemplaza con tu imagen
                 contentDescription = "Dudas e información",
                 modifier = Modifier
                     .size(160.dp)

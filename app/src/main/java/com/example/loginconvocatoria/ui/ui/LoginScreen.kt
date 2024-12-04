@@ -162,6 +162,20 @@ fun LoginScreen(
                 )
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextButton(
+            onClick = {
+                navController.navigate("Ruta2") // Cambia "RegisterScreen" al nombre de tu ruta de registro
+            },
+            modifier = Modifier.padding(horizontal = 32.dp)
+        ) {
+            Text(
+                text = "Registrarse",
+                color = colorResource(id = R.color.rojo_vino),
+                fontWeight = FontWeight.Bold
+            )
+        }
         errorMessage?.let {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = it, color = Color.Red)

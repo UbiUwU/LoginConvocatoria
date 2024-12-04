@@ -36,7 +36,7 @@ fun ViewConvocatorias(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 60.dp, max = 60.dp) // Altura ajustada para el encabezado
+                .heightIn(min = 60.dp, max = 75.dp) // Altura ajustada para el encabezado
                 .padding(vertical = 8.dp),
             contentAlignment = Alignment.Center // Centrar el texto en el Box
         ) {

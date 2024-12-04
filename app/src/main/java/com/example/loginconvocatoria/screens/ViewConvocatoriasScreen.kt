@@ -27,6 +27,48 @@ fun ViewConvocatorias(
     // Estado de las solicitudes
     val solicitudes by viewModel.solicitudes.collectAsState()
 
+    // Estado para el filtro seleccionado
+    var selectedFilter by remember { mutableStateOf("Todas") }
+    val categorias = listOf(
+        "Todas",
+        "Programas sociales, Desarrollo agropecuario.",
+        "Recursos humanos.",
+        "Fiscal.",
+        "Aduanera.",
+        "Educación",
+        "Armas de fuego y explosivos.",
+        "Comercio exterior.",
+        "Protección civil.",
+        "Derechos e intereses del consumidor.",
+        "Infraestructura y/o construcción.",
+        "Medio ambiente",
+        "Operaciones con recursos de procedencia ilícita",
+        "Programas sociales",
+        "Protección contra riesgos sanitarios",
+        "Proteger la sanidad y la inocuidad agroalimentaria, animal y vegetal",
+        "Recursos naturales",
+        "Salud",
+        "Sector financiero",
+        "Seguridad alimentaria",
+        "Seguridad de la población",
+        "Seguridad de los productos no alimentarios y protección del consumidor",
+        "Seguridad social",
+        "Seguridad, protección y/ salud laboral",
+        "Trabajo",
+        "Transporte",
+        "Turismo",
+        "Desarrollo agropecuario",
+        "Competitividad",
+        "Administración pública."
+    )
+
+    // Filtrar las solicitudes según la categoría seleccionada
+    val filteredSolicitudes = if (selectedFilter == "Todas") {
+        solicitudes
+    } else {
+        solicitudes.filter { it.materia_regulacion == selectedFilter }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,7 +83,7 @@ fun ViewConvocatorias(
             contentAlignment = Alignment.Center // Centrar el texto en el Box
         ) {
             Text(
-                text = "Agendas Regulatorias Periodo JULIO 2024",
+                text = "Agendas Regulatorias Período 2024",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
@@ -50,8 +92,49 @@ fun ViewConvocatorias(
             )
         }
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Filtrar por Materia:",
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp),
+                color = Color.Black,
+                modifier = Modifier.padding(end = 8.dp)
+            )
+            var expanded by remember { mutableStateOf(false) }
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Button(
+                    onClick = { expanded = true },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow, // Color rojo del botón
+                        contentColor = Color.Black // Texto en blanco
+                    )
+                ) {
+                    Text(text = selectedFilter)
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    categorias.forEach { categoria ->
+                        DropdownMenuItem(
+                            text = { Text(text = categoria) },
+                            onClick = {
+                                selectedFilter = categoria
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
+
         // Contenido
-        if (solicitudes.isEmpty()) {
+        if (filteredSolicitudes.isEmpty()) {
             // Texto de carga
             Box(
                 modifier = Modifier
@@ -60,7 +143,7 @@ fun ViewConvocatorias(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Cargando solicitudes...",
+                    text = "No hay solicitudes para la categoría seleccionada.",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -71,7 +154,7 @@ fun ViewConvocatorias(
                     .fillMaxSize()
                     .padding(top = 8.dp) // Separación entre el encabezado y la lista
             ) {
-                items(solicitudes) { solicitud ->
+                items(filteredSolicitudes) { solicitud ->
                     SolicitudCard(solicitud = solicitud) // Llama a la tarjeta sin el parámetro onClick
                 }
             }
@@ -138,62 +221,14 @@ fun SolicitudCard(solicitud: Solicitud) {
                 maxLines = 1
             )
 
-
             if (isExpanded) {
-                // Información adicional desplegada
                 Spacer(modifier = Modifier.height(16.dp))
-
-//                Text(
-//                    text = "Acción Regulatoria: ${solicitud.accion_regulatoria}",
-//                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-//                    color = Color.Black
-//                )
-
-                Text(
-                    text = "Cargo Responsable Propuesta: ${solicitud.cargo_responsable_propuesta}",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-                    color = Color.Black
-                )
                 Text(
                     text = "Descripción: ${solicitud.descripcion_propuesta}",
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                     color = Color.Black
                 )
-                Text(
-                    text = "Problemática: ${solicitud.problematica_propuesta}",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-                    color = Color.Black
-                )
-                Text(
-                    text = "Justificación: ${solicitud.justificacion_propuesta}",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-                    color = Color.Black
-                )
-                Text(
-                    text = "Beneficio: ${solicitud.beneficio_propuesta}",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-                    color = Color.Black
-                )
-                Text(
-                    text = "Fundamento Jurídico: ${solicitud.fundamento_juridico}",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-                    color = Color.Black
-                )
-//                Text(
-//                    text = "Fecha Tentativa Presentación: ${solicitud.fecha_tentativa_presentacion}",
-//                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-//                    color = Color.Black
-//                )
-//                Text(
-//                    text = "Fecha Tentativa Publicación: ${solicitud.fecha_tentativa_publicacion}",
-//                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-//                    color = Color.Black
-//                )
-//                Text(
-//                    text = "Publicación: ${solicitud.publicacion}",
-//                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
-//                    color = Color.Black
-//                )
+                // Agrega más información expandida aquí si es necesario
             }
         }
     }

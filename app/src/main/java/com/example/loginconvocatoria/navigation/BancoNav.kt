@@ -2,12 +2,14 @@ package com.example.loginconvocatoria.navigation
 
 import DashboardScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.loginconvocatoria.screens.DudasInformacion
 import com.example.loginconvocatoria.screens.GestionarAgendaScreen
 import com.example.loginconvocatoria.screens.HomeScreen
+import com.example.loginconvocatoria.screens.PerfilUsuarioScreen
 import com.example.loginconvocatoria.ui.ui.PageContent
 import com.example.loginconvocatoria.screens.Ruta1
 import com.example.loginconvocatoria.screens.Ruta2
@@ -29,7 +31,6 @@ fun BancoNav(
         composable("login_screen") {
             LoginScreen(navController = navController)
         }
-
 
         composable("home_screen") {
             HomeScreen(navController = navController)
@@ -67,6 +68,11 @@ fun BancoNav(
             GestionarAgendaScreen(navController = navController)
         }
 
+
+        // PerfilUsuarioScreen
+        composable("PerfilUsuario") {
+            PerfilUsuarioScreen(context = LocalContext.current)
+        }
 
         composable("Notifications") {
             Notifications()

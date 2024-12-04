@@ -55,7 +55,7 @@ fun DashboardCard(item: DashboardItem, navController: NavHostController) {
             .clickable {
                 // Maneja la navegación según el elemento
                 when (item.title) {
-                    "Perfil" -> navController.navigate("profile_screen")
+                    "Perfil" -> navController.navigate("PerfilUsuario")
                     "Gestionar Agendas" -> navController.navigate("Gestionar_Agendas")
                     "Ver Publicicacion" -> navController.navigate("home_screen")
                     "Ayuda" -> navController.navigate("Dudas_Informacion")

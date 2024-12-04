@@ -38,7 +38,7 @@ fun Menu_Lateral(
     val menuItems = listOf(
         MenuLateral.Ruta1,
         MenuLateral.Home,
-        MenuLateral.AgendasFinal,
+        MenuLateral.CrearAgendas,
         MenuLateral.Notifications,
         MenuLateral.DudasInformacion
     )

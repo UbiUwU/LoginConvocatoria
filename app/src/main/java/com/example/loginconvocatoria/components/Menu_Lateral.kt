@@ -36,7 +36,7 @@ fun Menu_Lateral(
     //Aqui se definen las rutas para el menu lateral
     val scope = rememberCoroutineScope()
     val menuItems = listOf(
-        MenuLateral.Ruta1,
+        MenuLateral.Login,
         MenuLateral.Home,
         MenuLateral.CrearAgendas,
         MenuLateral.Notifications,

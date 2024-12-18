@@ -11,14 +11,12 @@ import com.example.loginconvocatoria.screens.GestionarAgendaScreen
 import com.example.loginconvocatoria.screens.HomeScreen
 import com.example.loginconvocatoria.screens.PerfilUsuarioScreen
 import com.example.loginconvocatoria.ui.ui.PageContent
-import com.example.loginconvocatoria.screens.Ruta1
-import com.example.loginconvocatoria.screens.Ruta2
-import com.example.loginconvocatoria.screens.Ruta3
 import com.example.loginconvocatoria.screens.SuccessScreen
 import com.example.loginconvocatoria.ui.CreateSolicitudScreen
 import com.example.loginconvocatoria.ui.ui.AgendasFinal
-import com.example.loginconvocatoria.ui.ui.LoginScreen
+import com.example.loginconvocatoria.screens.LoginScreen
 import com.example.loginconvocatoria.ui.ui.Notifications
+import com.example.loginconvocatoria.ui.ui.Registro
 
 @Composable
 fun BancoNav(
@@ -35,15 +33,7 @@ fun BancoNav(
         composable("home_screen") {
             HomeScreen(navController = navController)
         }
-        composable("ruta1") {
-            Ruta1(navController = navController)
-        }
-        composable("ruta2") {
-            Ruta2(navController = navController)
-        }
-        composable("ruta3") {
-            Ruta3(navController = navController)
-        }
+
         composable("page_content") {
             PageContent()
         }
@@ -66,6 +56,10 @@ fun BancoNav(
 
         composable("Gestionar_Agendas") {
             GestionarAgendaScreen(navController = navController)
+        }
+
+        composable("Registro_Screen") {
+            Registro(navController = navController)
         }
 
 

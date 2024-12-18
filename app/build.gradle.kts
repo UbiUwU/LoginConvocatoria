@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
+    //id("com.google.devtools.ksp") version "2.1.0-1.0.29" // KSP
 }
 
 android {
@@ -60,32 +61,43 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
+    // Dependencias para Room
+    val room_version = "2.6.1"
 
+    implementation("androidx.room:room-runtime:$room_version")
+    //ksp("androidx.room:room-compiler:$room_version") // KSP
+    implementation("androidx.room:room-ktx:$room_version")
 
-// Dependencias adicionales
+    // Opcional: Integración con RxJava2, RxJava3, Guava o Paging
+    implementation("androidx.room:room-rxjava2:$room_version")
+    implementation("androidx.room:room-rxjava3:$room_version")
+    implementation("androidx.room:room-guava:$room_version")
+    implementation("androidx.room:room-paging:$room_version")
+
+    // Test helpers para Room
+    testImplementation("androidx.room:room-testing:$room_version")
+
+    // Dependencias adicionales
     implementation("androidx.compose.material:material:1.5.1")
-    implementation ("androidx.compose.material:material-icons-extended:1.0.0")
-    implementation ("androidx.compose.foundation:foundation:1.7.3")
-    implementation ("androidx.compose.runtime:runtime-livedata:1.7.3")
-    implementation ("io.coil-kt:coil-compose:2.7.0")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
-    implementation ("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.compose.material:material-icons-extended:1.0.0")
+    implementation("androidx.compose.foundation:foundation:1.7.3")
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.3")
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation(libs.firebase.crashlytics)
     implementation(libs.generativeai)
     implementation(libs.firebase.vertexai)
     implementation(libs.androidx.ui.test.android)
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.transition)
-    implementation(libs.androidx.transition)
-    implementation(libs.androidx.transition)
-    implementation(libs.androidx.transition)
-    val nav_version = "2.8.0"
 
     // Jetpack Compose integration
+    val nav_version = "2.8.0"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     // Views/Fragments integration
@@ -98,7 +110,6 @@ dependencies {
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
 
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -106,5 +117,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 }

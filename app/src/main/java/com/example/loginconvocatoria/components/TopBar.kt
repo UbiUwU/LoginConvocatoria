@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 fun getTitleForRoute(route: String?): String {
     return when (route) {
         MenuLateral.Home.route -> MenuLateral.Home.title
-        MenuLateral.Ruta1.route -> MenuLateral.Ruta1.title
+        MenuLateral.Login.route -> MenuLateral.Login.title
         MenuLateral.Ruta2.route -> MenuLateral.Ruta2.title
         MenuLateral.PageContent.route -> MenuLateral.PageContent.title
         MenuLateral.CreationAgend.route -> MenuLateral.CreationAgend.title

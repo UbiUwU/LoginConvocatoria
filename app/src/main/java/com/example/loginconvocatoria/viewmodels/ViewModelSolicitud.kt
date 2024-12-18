@@ -3,15 +3,12 @@ package com.example.loginconvocatoria.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.loginconvocatoria.api.ApiService
 import com.example.loginconvocatoria.api.RetrofitInstance
 import com.example.loginconvocatoria.models.Solicitud
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.Response
+
 
 class ViewModelSolicitud : ViewModel() {
 
@@ -46,6 +43,6 @@ class ViewModelSolicitud : ViewModel() {
     }
 
     init {
-        fetchSolicitudes() // Se ejecuta automáticamente cuando se crea el ViewModel
+        fetchSolicitudes()
     }
 }

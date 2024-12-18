@@ -128,7 +128,7 @@ fun PerfilUsuarioScreen(context: Context) {
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Botón de cerrar sesión mejorado
+
         Button(
             onClick = {
                 logout(context)

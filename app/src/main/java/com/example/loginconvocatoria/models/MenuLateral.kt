@@ -11,7 +11,7 @@ sealed class MenuLateral(
     val route: String
 ) {
     object Home : MenuLateral(Icons.Outlined.AssignmentTurnedIn, "Agendas publicadas", NavScreen.HomeScreen.route)
-    object Ruta1 : MenuLateral(Icons.Outlined.Login, "Inicio de sesion", NavScreen.Ruta1.route)
+    object Login : MenuLateral(Icons.Outlined.Login, "Inicio de sesion", NavScreen.LoginScreen.route)
     object Ruta2 : MenuLateral(Icons.Outlined.Add, "Registro", NavScreen.Ruta2.route)
     object CrearAgendas : MenuLateral(Icons.Outlined.Create, "Crear Agenda", NavScreen.CreationAgend.route)
 

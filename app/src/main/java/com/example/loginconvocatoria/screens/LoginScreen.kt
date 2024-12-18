@@ -1,4 +1,4 @@
-package com.example.loginconvocatoria.ui.ui
+package com.example.loginconvocatoria.screens
 
 import android.content.Context
 import android.util.Log
@@ -21,26 +21,26 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.loginconvocatoria.Database.DatabaseHelper
 import com.example.loginconvocatoria.R
-import com.example.loginconvocatoria.api.LoginRequest
-import com.example.loginconvocatoria.api.LoginResponse
+
 import com.example.loginconvocatoria.api.LoginRetrofitClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.loginconvocatoria.models.LoginRequest
+import com.example.loginconvocatoria.models.LoginResponse
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     navController: NavHostController
 ) {
-    val context = LocalContext.current // Captura el contexto aquí
+    val context = LocalContext.current
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
+
 
     fun performLogin(context: Context) {
         if (email.isBlank()) {
@@ -57,23 +57,24 @@ fun LoginScreen(
         isLoading = true
 
         LoginRetrofitClient.instance.login(loginRequest).enqueue(object : retrofit2.Callback<LoginResponse> {
-            override fun onResponse(
-                call: retrofit2.Call<LoginResponse>,
-                response: retrofit2.Response<LoginResponse>
-            ) {
+            override fun onResponse(call: retrofit2.Call<LoginResponse>, response: retrofit2.Response<LoginResponse>) {
                 isLoading = false
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
-                    val sharedPref = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
-                    with(sharedPref.edit()) {
-                        putString("token", loginResponse?.token)
-                        putInt("idUsuario", loginResponse?.usuario?.idUsuario ?: -1)
-                        putString("nombreUsuario", loginResponse?.usuario?.nombreUsuario ?: "")
-                        putString("email", loginResponse?.usuario?.email ?: "")
-                        putString("rol", loginResponse?.usuario?.rol ?: "")
-                        apply()
+
+                 //
+                    val dbHelper = DatabaseHelper(context)
+                    loginResponse?.let {
+                        dbHelper.insertUser(
+                            id = it.usuario.idUsuario,
+                            email = it.usuario.email,
+                            token = it.token,
+                            nombreUsuario = it.usuario.nombreUsuario,
+                            rol = it.usuario.rol
+                        )
                     }
-                    navController.navigate("Dashboard")
+
+                    navController.navigate("Dashboard") // Para que navegue al dash :p
                 } else {
                     Log.e("Login", "Error en el inicio de sesión: ${response.code()}")
                     errorMessage = "Credenciales incorrectas."
@@ -87,6 +88,7 @@ fun LoginScreen(
             }
         })
     }
+
 
     Column(
         modifier = Modifier
@@ -166,7 +168,7 @@ fun LoginScreen(
 
         TextButton(
             onClick = {
-                navController.navigate("Ruta2") // Cambia "RegisterScreen" al nombre de tu ruta de registro
+                navController.navigate("Registro_Screen")
             },
             modifier = Modifier.padding(horizontal = 32.dp)
         ) {
@@ -182,4 +184,3 @@ fun LoginScreen(
         }
     }
 }
-

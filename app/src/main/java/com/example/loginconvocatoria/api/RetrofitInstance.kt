@@ -17,15 +17,16 @@ object RetrofitInstance {
         .build()
 
     private val gson = GsonBuilder()
-        .setLenient()  // Permite JSON malformado
+        .setLenient()
         .create()
 
-    val api: ApiService by lazy {
+//Instancia
+    val api: ApiServiceNucleoDigital by lazy {
         Retrofit.Builder()
             .baseUrl("http://comedatos.qroo.gob.mx/api/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-            .create(ApiService::class.java)
+            .create(ApiServiceNucleoDigital::class.java)
     }
 }

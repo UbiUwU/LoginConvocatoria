@@ -18,7 +18,7 @@ import com.example.loginconvocatoria.R
 
 @Composable
 fun SuccessScreen(navController: NavController) {
-    // Puedes envolver todo en un Box para mayor flexibilidad
+
     Box(
         modifier = Modifier
             .fillMaxSize()

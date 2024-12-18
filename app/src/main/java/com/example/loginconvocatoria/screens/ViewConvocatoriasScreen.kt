@@ -22,7 +22,7 @@ import com.example.loginconvocatoria.viewmodels.ViewModelSolicitud
 @Composable
 fun ViewConvocatorias(
     navController: NavController,
-    viewModel: ViewModelSolicitud = viewModel() // Inyecta el ViewModel
+    viewModel: ViewModelSolicitud = viewModel()
 ) {
     // Estado de las solicitudes
     val solicitudes by viewModel.solicitudes.collectAsState()
@@ -62,7 +62,7 @@ fun ViewConvocatorias(
         "Administración pública."
     )
 
-    // Filtrar las solicitudes según la categoría seleccionada
+    // Filtrar de las solicitudes (L)
     val filteredSolicitudes = if (selectedFilter == "Todas") {
         solicitudes
     } else {
@@ -119,6 +119,7 @@ fun ViewConvocatorias(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
                 ) {
+                    //()
                     categorias.forEach { categoria ->
                         DropdownMenuItem(
                             text = { Text(text = categoria) },
@@ -152,10 +153,11 @@ fun ViewConvocatorias(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 8.dp) // Separación entre el encabezado y la lista
+                    .padding(top = 8.dp)
             ) {
+                //()
                 items(filteredSolicitudes) { solicitud ->
-                    SolicitudCard(solicitud = solicitud) // Llama a la tarjeta sin el parámetro onClick
+                    SolicitudCard(solicitud = solicitud)
                 }
             }
         }

@@ -1,15 +1,11 @@
 package com.example.loginconvocatoria.models
 
-
-data class Usuario(
-    val idUsuario: Int,
+data class RegisterRequest(
     val nombreUsuario: String,
     val apellidoPaterno: String,
     val apellidoMaterno: String,
     val email: String,
+    val password: String,
     val idDependencia: Int?,
-    val rol: String,
-    val estado: Boolean,
-    val created_at: String,
-    val updated_at: String
+    val rol: String
 )

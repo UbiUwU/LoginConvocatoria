@@ -1,7 +1,12 @@
 package com.example.loginconvocatoria.models
 
+data class RegisterResponse(
+    val message: String,
+    val token: String,
+    val usuario: Usuario
+)
 
-data class Usuario(
+data class UsuarioRegister(
     val idUsuario: Int,
     val nombreUsuario: String,
     val apellidoPaterno: String,

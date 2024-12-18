@@ -3,6 +3,6 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">comedatos.qroo.gob.mx</domain>
         //considerar la direccion ip actual del servidor
-        <domain includeSubdomains="true">192.168.164.177</domain>
+        <domain includeSubdomains="true">192.168.0.6</domain>
     </domain-config>
 </network-security-config>

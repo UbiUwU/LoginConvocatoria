@@ -11,11 +11,19 @@ import retrofit2.http.Header
 import retrofit2.http.DELETE
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import com.example.loginconvocatoria.models.RegisterRequest
+import com.example.loginconvocatoria.models.RegisterResponse
 
 interface ApiServiceLogin {
     // Login
     @POST("login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
+
+    // Registro
+    @POST("register")
+    fun registerUser(
+        @Body request: RegisterRequest
+    ): Call<RegisterResponse>
 
     // Obtener todas las solicitudes
     @GET("solicitudes")
@@ -45,4 +53,3 @@ interface ApiServiceLogin {
         @Path("id") id: Int
     ): Call<Void>
 }
-

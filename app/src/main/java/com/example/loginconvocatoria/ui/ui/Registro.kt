@@ -1,18 +1,24 @@
 package com.example.loginconvocatoria.ui.ui
 
+import android.widget.Toast
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,167 +28,254 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.loginconvocatoria.R
+import com.example.loginconvocatoria.api.LoginRetrofitClient
+import com.example.loginconvocatoria.models.RegisterRequest
+import com.example.loginconvocatoria.models.RegisterResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Registro(navController: NavHostController) {
-    var nombres by remember { mutableStateOf("") }
-    var apellido1 by remember { mutableStateOf("") }
-    var apellido2 by remember { mutableStateOf("") }
-    var telefono by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    // Campos de entrada
+    var nombreUsuario by remember { mutableStateOf("") }
+    var apellidoPaterno by remember { mutableStateOf("") }
+    var apellidoMaterno by remember { mutableStateOf("") }
     var correo by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    var rolSeleccionado by remember { mutableStateOf("Ciudadano") } // Valor inicial
     var errorMessage by remember { mutableStateOf("") }
 
-    // Fondo degradado para la pantalla
+    // Ahora sólo estarán estos dos roles en la lista
+    val roles = listOf("Ciudadano", "SujetoObligado")
+    var expanded by remember { mutableStateOf(false) }
+
+    val apiService = LoginRetrofitClient.instance
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                        Color.White
+                    )
+                )
+            )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.Center,
+                .verticalScroll(scrollState)
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Encabezado con logo
             Image(
                 painter = painterResource(id = R.drawable.cemer_qro),
                 contentDescription = "Logo de registro",
                 modifier = Modifier
-                    .size(200.dp) // Tamaño del logo
+                    .size(180.dp)
+                    .padding(top = 24.dp)
             )
             Text(
                 text = "¡Crea tu cuenta!",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.padding(top = 2.dp)
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(top = 16.dp)
             )
             Text(
                 text = "Llena los datos para registrarte",
-                fontSize = 16.sp,
-                color = Color.Black,
-                textAlign = TextAlign.Center
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(8.dp))
 
-            // Campos de entrada
-            Column(
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(8.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .padding(16.dp)
+                    .padding(horizontal = 8.dp)
             ) {
-                OutlinedTextField(
-                    value = nombres,
-                    onValueChange = { nombres = it },
-                    label = { Text(text = "Nombres") },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
-                        unfocusedBorderColor = Color.Gray
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    OutlinedTextField(
+                        value = nombreUsuario,
+                        onValueChange = { nombreUsuario = it },
+                        label = { Text("Nombre de Usuario") },
+                        supportingText = { Text("Ingresa tu nombre (y segundo nombre en caso de tener).") },
+                        modifier = Modifier.fillMaxWidth()
                     )
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                OutlinedTextField(
-                    value = apellido1,
-                    onValueChange = { apellido1 = it },
-                    label = { Text(text = "Primer Apellido") },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
-                        unfocusedBorderColor = Color.Gray
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        value = apellidoPaterno,
+                        onValueChange = { apellidoPaterno = it },
+                        label = { Text("Apellido Paterno") },
+                        supportingText = { Text("Ingresa tu apellido Paterno.") },
+                        modifier = Modifier.fillMaxWidth()
                     )
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                OutlinedTextField(
-                    value = apellido2,
-                    onValueChange = { apellido2 = it },
-                    label = { Text(text = "Segundo Apellido") },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
-                        unfocusedBorderColor = Color.Gray
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        value = apellidoMaterno,
+                        onValueChange = { apellidoMaterno = it },
+                        label = { Text("Apellido Materno") },
+                        supportingText = { Text("Ingresa tu apellido Materno.") },
+                        modifier = Modifier.fillMaxWidth()
                     )
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                OutlinedTextField(
-                    value = telefono,
-                    onValueChange = { telefono = it },
-                    label = { Text(text = "Teléfono") },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
-                        unfocusedBorderColor = Color.Gray
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        value = correo,
+                        onValueChange = { correo = it },
+                        label = { Text("Correo Electrónico") },
+                        supportingText = { Text("Debe ser un correo electrónico válido.") },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = androidx.compose.ui.text.input.KeyboardType.Email)
                     )
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                OutlinedTextField(
-                    value = correo,
-                    onValueChange = { correo = it },
-                    label = { Text(text = "Correo Electrónico") },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
-                        unfocusedBorderColor = Color.Gray
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        label = { Text("Contraseña") },
+                        supportingText = { Text("Mínimo 6 caracteres.") },
+                        visualTransformation = PasswordVisualTransformation(),
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = androidx.compose.ui.text.input.KeyboardType.Password)
                     )
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text(text = "Contraseña") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(id = R.color.rojo_vino),
-                        unfocusedBorderColor = Color.Gray
-                    )
-                )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        OutlinedTextField(
+                            value = rolSeleccionado,
+                            onValueChange = {},
+                            label = { Text("Rol") },
+                            supportingText = { Text("Selecciona el rol que deseas tener.") },
+                            readOnly = true,
+                            trailingIcon = {
+                                Icon(
+                                    Icons.Filled.ArrowDropDown,
+                                    contentDescription = "Seleccionar rol",
+                                    modifier = Modifier.clickable { expanded = true }
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { expanded = true }
+                        )
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            roles.forEach { rol ->
+                                DropdownMenuItem(
+                                    text = { Text(rol) },
+                                    onClick = {
+                                        rolSeleccionado = rol
+                                        expanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // Mensaje de error
-            if (errorMessage.isNotEmpty()) {
-                Text(
-                    text = errorMessage,
-                    color = Color.Red,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-            // Botón "Regístrate"
             Button(
                 onClick = {
-                    if (nombres.isNotEmpty() && apellido1.isNotEmpty() && telefono.isNotEmpty() && correo.isNotEmpty() && password.isNotEmpty()) {
-                        Log.i("Registro", "Usuario registrado: $nombres $apellido1 $apellido2")
-                        navController.navigate("home_screen")
+                    if (nombreUsuario.isNotEmpty() &&
+                        apellidoPaterno.isNotEmpty() &&
+                        correo.isNotEmpty() &&
+                        password.length >= 6
+                    ) {
+                        val registerRequest = RegisterRequest(
+                            nombreUsuario = nombreUsuario,
+                            apellidoPaterno = apellidoPaterno,
+                            apellidoMaterno = apellidoMaterno,
+                            email = correo,
+                            password = password,
+                            idDependencia = null,
+                            rol = rolSeleccionado
+                        )
+
+                        // Llamada a la API
+                        apiService.registerUser(registerRequest)
+                            .enqueue(object : Callback<RegisterResponse> {
+                                override fun onResponse(
+                                    call: Call<RegisterResponse>,
+                                    response: Response<RegisterResponse>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        // Mostrar Toast
+                                        Toast.makeText(context, "Cuenta creada exitosamente", Toast.LENGTH_LONG).show()
+                                        // Navegar a la pantalla de login
+                                        navController.navigate("login_screen") {
+                                            popUpTo("registro") { inclusive = true }
+                                        }
+                                    } else {
+                                        errorMessage = response.body()?.message ?: "Error en el registro"
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                                    errorMessage = "Error de conexión: ${t.message}"
+                                }
+                            })
                     } else {
-                        errorMessage = "Por favor, completa todos los campos."
+                        errorMessage = "Por favor, completa todos los campos obligatorios y asegúrate de que la contraseña tenga al menos 6 caracteres."
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp)
                     .height(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.rojo_vino)
-                ),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.rojo_vino))
             ) {
-                Text(text = "Regístrate", color = Color.White, fontSize = 16.sp)
+                Text(
+                    text = "Regístrate",
+                    color = Color.White,
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold)
+                )
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
 
+            if (errorMessage.isNotEmpty()) {
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 14.sp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                )
+            }
 
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }

@@ -1,5 +1,5 @@
 package com.example.loginconvocatoria.models
-
+//YA NO SE USA
 data class CrearSolicitudRequest(
     val usuario_id: Int,
     val homoclave_formato: String,

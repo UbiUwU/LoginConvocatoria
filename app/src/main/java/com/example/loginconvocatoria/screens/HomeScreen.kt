@@ -20,8 +20,6 @@ fun HomeScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-
         ViewConvocatorias(navController)
     }
 }

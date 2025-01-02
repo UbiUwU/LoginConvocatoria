@@ -10,10 +10,7 @@ import com.example.loginconvocatoria.screens.DudasInformacion
 import com.example.loginconvocatoria.screens.GestionarAgendaScreen
 import com.example.loginconvocatoria.screens.HomeScreen
 import com.example.loginconvocatoria.screens.PerfilUsuarioScreen
-import com.example.loginconvocatoria.ui.ui.PageContent
-import com.example.loginconvocatoria.screens.SuccessScreen
 import com.example.loginconvocatoria.ui.CreateSolicitudScreen
-import com.example.loginconvocatoria.ui.ui.AgendasFinal
 import com.example.loginconvocatoria.screens.LoginScreen
 import com.example.loginconvocatoria.ui.ui.Notifications
 import com.example.loginconvocatoria.ui.ui.Registro
@@ -29,24 +26,13 @@ fun BancoNav(
         composable("login_screen") {
             LoginScreen(navController = navController)
         }
-
         composable("home_screen") {
             HomeScreen(navController = navController)
-        }
-
-        composable("page_content") {
-            PageContent()
         }
         composable("Creation_Agend") {
             CreateSolicitudScreen(navController = navController)
         }
-        composable("success_screen") {
-            SuccessScreen(navController = navController)
-        }
 
-        composable("Agendas_Final") {
-            AgendasFinal(navController = navController)
-        }
         composable("Dudas_Informacion") {
             DudasInformacion(navController = navController)
         }
@@ -57,20 +43,16 @@ fun BancoNav(
         composable("Gestionar_Agendas") {
             GestionarAgendaScreen(navController = navController)
         }
-
         composable("Registro_Screen") {
             Registro(navController = navController)
         }
-
-
         // PerfilUsuarioScreen
         composable("PerfilUsuario") {
             PerfilUsuarioScreen(context = LocalContext.current)
         }
-
         composable("Notifications") {
             Notifications()
         }
-        agendaVisuaRoute(navController)
+
     }
 }

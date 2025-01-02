@@ -1,5 +1,5 @@
 package com.example.loginconvocatoria.navigation
-
+//Si se usa xd
 enum class NavScreen(val route: String) {
     HomeScreen("home_screen"),
     LoginScreen("login_screen"),
@@ -12,10 +12,4 @@ enum class NavScreen(val route: String) {
     AgendaVisua("Agenda_Visua"),
     AgendasFinal("Agendas_Final"),
     Notifications("Notifications"),
-    DashboardScreen("Dashboard"),
-    UserProfileScreen("Perfil_Usuario"),
-    ManageSolicitudesScreen("Administrar"),
-    SuccessScreen("Pantalla_Exito")
-
-
 }

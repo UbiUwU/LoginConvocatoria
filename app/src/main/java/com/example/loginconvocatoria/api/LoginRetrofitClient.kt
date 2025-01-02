@@ -5,8 +5,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object LoginRetrofitClient {
     //considerar la ip actual de la pc servidor
-    private const val BASE_URL = "http://192.168.0.6:8000/api/"
-
+    private const val BASE_URL = "http://192.168.1.72:8000/api/"
+    //192.168.1.72
 
     val instance: ApiServiceLogin by lazy {
         Retrofit.Builder()

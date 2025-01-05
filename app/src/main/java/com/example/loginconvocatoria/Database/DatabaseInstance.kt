@@ -3,19 +3,17 @@ package com.example.loginconvocatoria.Database
 import android.content.Context
 import androidx.room.Room
 
-object DatabaseProvider {
-    @Volatile
-    private var INSTANCE: AppDatabase? = null
+object DatabaseInstance {
+    private var dbInstance: AppDatabase? = null
 
     fun getDatabase(context: Context): AppDatabase {
-        return INSTANCE ?: synchronized(this) {
-            val instance = Room.databaseBuilder(
+        if (dbInstance == null) {
+            dbInstance = Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
                 "app_database"
             ).build()
-            INSTANCE = instance
-            instance
         }
+        return dbInstance!!
     }
 }

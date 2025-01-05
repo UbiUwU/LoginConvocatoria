@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
-    //id("com.google.devtools.ksp") version "2.1.0-1.0.29" // KSP
+    id("com.google.devtools.ksp") version "1.9.0-1.0.12" // Reemplaza con la última versión compatible
 }
 
 android {
@@ -65,21 +65,11 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
-    // Dependencias para Room
-    val room_version = "2.6.1"
+    //Room
+    implementation("androidx.room:room-runtime:2.5.1")
+    implementation("androidx.room:room-ktx:2.5.1")
+    ksp("androidx.room:room-compiler:2.5.1")
 
-    implementation("androidx.room:room-runtime:$room_version")
-    //ksp("androidx.room:room-compiler:$room_version") // KSP
-    implementation("androidx.room:room-ktx:$room_version")
-
-    // Opcional: Integración con RxJava2, RxJava3, Guava o Paging
-    implementation("androidx.room:room-rxjava2:$room_version")
-    implementation("androidx.room:room-rxjava3:$room_version")
-    implementation("androidx.room:room-guava:$room_version")
-    implementation("androidx.room:room-paging:$room_version")
-
-    // Test helpers para Room
-    testImplementation("androidx.room:room-testing:$room_version")
 
     // Dependencias adicionales
     implementation("androidx.compose.material:material:1.5.1")

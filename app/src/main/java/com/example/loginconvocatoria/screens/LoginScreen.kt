@@ -21,12 +21,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.loginconvocatoria.Database.DatabaseHelper
+import com.example.loginconvocatoria.Database.DatabaseInstance
+import com.example.loginconvocatoria.Database.UserEntity
 import com.example.loginconvocatoria.R
-
 import com.example.loginconvocatoria.api.LoginRetrofitClient
 import com.example.loginconvocatoria.models.LoginRequest
 import com.example.loginconvocatoria.models.LoginResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +43,6 @@ fun LoginScreen(
     var passwordVisible by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
-
 
     fun performLogin(context: Context) {
         if (email.isBlank()) {
@@ -62,19 +64,22 @@ fun LoginScreen(
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
 
-                 //
-                    val dbHelper = DatabaseHelper(context)
                     loginResponse?.let {
-                        dbHelper.insertUser(
-                            id = it.usuario.idUsuario,
+                        val userEntity = UserEntity(
                             email = it.usuario.email,
                             token = it.token,
                             nombreUsuario = it.usuario.nombreUsuario,
                             rol = it.usuario.rol
                         )
+
+                        //Coroutina para la base de datos
+                        val db = DatabaseInstance.getDatabase(context)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            db.userDao().insertUser(userEntity)
+                        }
                     }
 
-                    navController.navigate("Dashboard") // Para que navegue al dash :p
+                    navController.navigate("Dashboard")
                 } else {
                     Log.e("Login", "Error en el inicio de sesión: ${response.code()}")
                     errorMessage = "Credenciales incorrectas."
